@@ -44,3 +44,41 @@ void em_ipc_destroy(void)
     g_result_qid = -1;
     printf("[EM_IPC] Handles fermés.\n");
 }
+
+/* ── Soumission de job ────────────────────────────────────────────────────── */
+
+int em_ipc_submit_job(const em_job_t  *job,
+                       const em_task_t *tasks,
+                       size_t           n_tasks)
+{
+    if (!job || !tasks || n_tasks == 0 || g_submit_qid == -1)
+        return -1;
+    if (n_tasks > EM_MAX_TASKS_PER_JOB)
+        return -1;
+
+    em_submit_msg_t msg;
+    memset(&msg, 0, sizeof(msg));
+
+    msg.mtype   = EM_MSG_JOB_SUBMIT;
+    msg.job_id  = job->job_id;
+    msg.n_tasks = n_tasks;
+    memcpy(msg.client_id, job->client_id, EM_CLIENT_ID_LEN - 1);
+    msg.client_id[EM_CLIENT_ID_LEN - 1] = '\0';
+    memcpy(msg.tasks, tasks, n_tasks * sizeof(em_task_t));
+
+    /*
+     * On envoie uniquement la partie utile du message pour rester
+     * bien en dessous de MSGMAX (8192 octets sur Linux).
+     */
+    size_t payload_size = sizeof(em_submit_msg_t)
+                          - (EM_MAX_TASKS_PER_JOB - n_tasks) * sizeof(em_task_t);
+
+    if (msgsnd(g_submit_qid, &msg, payload_size - sizeof(long), 0) == -1) {
+        perror("[EM_IPC] msgsnd(SUBMIT) failed");
+        return -1;
+    }
+
+    printf("[EM_IPC] Job %lu soumis (%zu tâches).\n",
+           (unsigned long)job->job_id, n_tasks);
+    return 0;
+}
