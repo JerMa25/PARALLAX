@@ -1,8 +1,16 @@
 /*
  * fault_tolerance.c
- * Implémentation du module de gestion des pannes
- * Parties : utilitaires, initialisation, heartbeat, détection
+ * Utilitaires communs du fault_manager PARALLAX
+ *
+ * Contient :
+ *   - fm_init / fm_destroy
+ *   - fm_elapsed_sec
+ *   - fm_default_best_worker   (politique meilleur nœud)
+ *   - fm_on_heartbeat_received (mise à jour NodeTable)
+ *   - Helpers internes de log
  */
+
+#define _POSIX_C_SOURCE 200809L
 
 #include "fault_tolerance.h"
 
@@ -12,545 +20,263 @@
 #include <errno.h>
 #include <unistd.h>
 #include <time.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 
-/* ─────────────────────────────────────────────────────────────
+/* ─────────────────────────────────────────────────────────────────────
  * SECTION 1 — UTILITAIRES INTERNES
- * ───────────────────────────────────────────────────────────── */
+ * ───────────────────────────────────────────────────────────────────── */
 
 /*
- * ft_elapsed_ms
- * Retourne le nombre de millisecondes écoulées depuis 'since'.
- * Utilise CLOCK_MONOTONIC pour éviter les sauts d'horloge système.
+ * fm_elapsed_sec
+ * Secondes écoulées depuis un timestamp time_t (last_heartbeat de NodeInfo).
+ * On utilise time() et non CLOCK_MONOTONIC car NodeTable stocke time_t.
  */
-int64_t ft_elapsed_ms(const struct timespec *since)
+double fm_elapsed_sec(time_t since)
 {
-    struct timespec now;
-    clock_gettime(CLOCK_MONOTONIC, &now);
-
-    int64_t diff_s  = (int64_t)(now.tv_sec  - since->tv_sec);
-    int64_t diff_ns = (int64_t)(now.tv_nsec - since->tv_nsec);
-    return diff_s * 1000 + diff_ns / 1000000;
+    return difftime(time(NULL), since);
 }
 
-/*
- * ft_sleep_ms
- * Sommeil portable en millisecondes, robuste aux interruptions EINTR.
- */
-static void ft_sleep_ms(uint32_t ms)
-{
-    struct timespec ts = {
-        .tv_sec  = ms / 1000,
-        .tv_nsec = (ms % 1000) * 1000000L
-    };
-    /* nanosleep peut être interrompu par un signal : relancer */
-    while (nanosleep(&ts, &ts) == -1 && errno == EINTR)
-        ;
-}
-
-/*
- * ft_generate_uuid
- * Génère un UUID v4 pseudo-aléatoire à partir de /dev/urandom.
- * Format : xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
- */
-void ft_generate_uuid(char *out)
-{
-    uint8_t rnd[16];
-    int fd = open("/dev/urandom", O_RDONLY);
-    if (fd < 0 || read(fd, rnd, sizeof(rnd)) != (ssize_t)sizeof(rnd)) {
-        /* Fallback : rand() si /dev/urandom indisponible */
-        srand((unsigned)time(NULL) ^ (unsigned)getpid());
-        for (int i = 0; i < 16; i++) rnd[i] = (uint8_t)rand();
-    }
-    if (fd >= 0) close(fd);
-
-    /* Ajustement des bits version/variant UUID v4 */
-    rnd[6] = (rnd[6] & 0x0F) | 0x40;
-    rnd[8] = (rnd[8] & 0x3F) | 0x80;
-
-    snprintf(out, UUID_STR_LEN,
-             "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-"
-             "%02x%02x%02x%02x%02x%02x",
-             rnd[0],  rnd[1],  rnd[2],  rnd[3],
-             rnd[4],  rnd[5],
-             rnd[6],  rnd[7],
-             rnd[8],  rnd[9],
-             rnd[10], rnd[11], rnd[12], rnd[13], rnd[14], rnd[15]);
-}
-
-
-static const char *fault_type_str(FaultType t)
+/* Chaîne lisible pour un type de panne */
+static const char *fm_fault_str(fm_fault_type_t t)
 {
     switch (t) {
-        case FAULT_HEARTBEAT_LOSS:  return "HEARTBEAT_LOSS";
-        case FAULT_CPU_OVERLOAD:    return "CPU_OVERLOAD";
-        case FAULT_MEM_OVERLOAD:    return "MEM_OVERLOAD";
-        case FAULT_NETWORK_BROKEN:  return "NETWORK_BROKEN";
-        case FAULT_TASK_TIMEOUT:    return "TASK_TIMEOUT";
-        case FAULT_TASK_CRASH:      return "TASK_CRASH";
-        case FAULT_MASTER_DOWN:     return "MASTER_DOWN";
-        case FAULT_SECONDARY_DOWN:  return "SECONDARY_DOWN";
-        case FAULT_DISK_FULL:       return "DISK_FULL";
-        case FAULT_SOCKET_ERROR:    return "SOCKET_ERROR";
-        default:                    return "UNKNOWN";
-    }
-}
-
-static const char *recovery_str(RecoveryAction a)
-{
-    switch (a) {
-        case RECOVERY_RETRY_TASK:        return "RETRY_TASK";
-        case RECOVERY_MIGRATE_TASK:      return "MIGRATE_TASK";
-        case RECOVERY_ELECT_NEW_MASTER:  return "ELECT_NEW_MASTER";
-        case RECOVERY_PROMOTE_SECONDARY: return "PROMOTE_SECONDARY";
-        case RECOVERY_REMOVE_NODE:       return "REMOVE_NODE";
-        case RECOVERY_THROTTLE_LOAD:     return "THROTTLE_LOAD";
-        case RECOVERY_RECONNECT:         return "RECONNECT";
-        default:                         return "UNKNOWN";
-    }
-}
-
-static const char *node_role_str(NodeRole r)
-{
-    switch (r) {
-        case NODE_ROLE_MASTER:    return "MASTER";
-        case NODE_ROLE_WORKER:    return "WORKER";
-        case NODE_ROLE_SECONDARY: return "SECONDARY";
-        default:                  return "UNKNOWN";
-    }
-}
-
-static const char *node_state_str(NodeState s)
-{
-    switch (s) {
-        case NODE_STATE_DISCONNECTED: return "DISCONNECTED";
-        case NODE_STATE_ACTIVE:       return "ACTIVE";
-        case NODE_STATE_OVERLOADED:   return "OVERLOADED";
-        case NODE_STATE_FAILED:       return "FAILED";
-        case NODE_STATE_MAINTENANCE:  return "MAINTENANCE";
+        case FM_FAULT_HEARTBEAT_LOSS: return "HEARTBEAT_LOSS";
+        case FM_FAULT_CPU_OVERLOAD:   return "CPU_OVERLOAD";
+        case FM_FAULT_RAM_OVERLOAD:   return "RAM_OVERLOAD";
+        case FM_FAULT_MASTER_DOWN:    return "MASTER_DOWN";
+        case FM_FAULT_WORKER_CRASH:   return "WORKER_CRASH";
         default:                      return "UNKNOWN";
     }
 }
 
+/* Chaîne lisible pour un rôle */
+static const char *fm_role_str(fm_role_t r)
+{
+    switch (r) {
+        case FM_ROLE_MASTER:    return "MASTER";
+        case FM_ROLE_SECONDARY: return "SECONDARY";
+        case FM_ROLE_WORKER:    return "WORKER";
+        default:                return "UNKNOWN";
+    }
+}
+
 /*
- * ft_log_fault
- * Journalise une panne sur stderr avec horodatage ISO 8601.
- * Appelle le callback on_fault si enregistré.
+ * fm_log_fault
+ * Journalise un événement de panne sur stderr (horodatage ISO 8601),
+ * puis appelle le callback on_fault si enregistré.
  */
-void ft_log_fault(NodeContext *ctx, const FaultEvent *evt)
+static void fm_log_fault(fm_context_t *ctx, const fm_fault_event_t *evt)
 {
     char timebuf[32];
     struct tm *tm_info = localtime(&evt->timestamp);
     strftime(timebuf, sizeof(timebuf), "%Y-%m-%dT%H:%M:%S", tm_info);
 
     fprintf(stderr,
-            "[%s] FAULT %-18s | role=%-9s | node=%s | detail=%s | recovery=%s\n",
+            "[%s][FAULT_MANAGER] %-20s | role=%-9s | node=%.8s... | %s\n",
             timebuf,
-            fault_type_str(evt->type),
-            node_role_str(evt->node_role),
+            fm_fault_str(evt->type),
+            fm_role_str(ctx->self_role),
             evt->node_uuid,
-            evt->detail,
-            recovery_str(evt->suggested_action));
+            evt->detail);
 
     if (ctx->on_fault)
-        ctx->on_fault(evt);
+        ctx->on_fault(evt, ctx->user_data);
 }
 
-/* ─────────────────────────────────────────────────────────────
- * SECTION 3 — CHANGEMENT D'ÉTAT D'UN NŒUD
- * ───────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────────
+ * SECTION 2 — INITIALISATION / DESTRUCTION
+ * ───────────────────────────────────────────────────────────────────── */
 
-/*
- * ft_node_set_state
- * Transition atomique d'état avec log et callback.
- * La transition est ignorée si l'état est déjà identique.
- */
-void ft_node_set_state(NodeContext *ctx, ClusterNode *node,
-                       NodeState new_state, const char *reason)
+int fm_init(fm_context_t  *ctx,
+            fm_role_t      role,
+            const char    *self_uuid,
+            const char    *self_ip,
+            NodeTable     *node_table)
 {
-    pthread_mutex_lock(&node->lock);
-    NodeState old_state = node->state;
+    if (!ctx || !self_uuid || !self_ip || !node_table)
+        return -1;
 
-    if (old_state == new_state) {
-        pthread_mutex_unlock(&node->lock);
+    memset(ctx, 0, sizeof(fm_context_t));
+
+    strncpy(ctx->self_uuid, self_uuid, FM_UUID_LEN - 1);
+    strncpy(ctx->self_ip,   self_ip,   sizeof(ctx->self_ip) - 1);
+    ctx->self_role  = role;
+    ctx->node_table = node_table;
+
+    atomic_store(&ctx->running, 0);
+
+    if (pthread_mutex_init(&ctx->lock, NULL) != 0) {
+        perror("[FaultManager] pthread_mutex_init");
+        return -1;
+    }
+
+    fprintf(stderr,
+            "[FaultManager] Initialisé — uuid=%.8s... role=%s\n",
+            ctx->self_uuid, fm_role_str(role));
+    return 0;
+}
+
+void fm_destroy(fm_context_t *ctx)
+{
+    if (!ctx) return;
+
+    /* Arrêt propre si encore en cours */
+    if (atomic_load(&ctx->running))
+        fault_manager_stop(ctx);
+
+    pthread_mutex_destroy(&ctx->lock);
+    fprintf(stderr, "[FaultManager] Détruit.\n");
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * SECTION 3 — POLITIQUE DU MEILLEUR NŒUD
+ *
+ * Score = (1 - cpu_usage) * (1 - ram_usage)
+ *
+ * Aligné sur :
+ *   - master_score_worker()     dans l'ancien fault_master.c
+ *   - scheduler_compute_score() dans orchestrator/scheduler.h
+ *   - update_heartbeat()        dans state_receiver.c (seuil 0.85)
+ *
+ * Un nœud avec cpu_usage=0.20 et ram_usage=0.30
+ * obtient  score = 0.80 * 0.70 = 0.56
+ * Un nœud avec cpu_usage=0.90 obtient ≈ 0.07 → écarté.
+ * ───────────────────────────────────────────────────────────────────── */
+
+void fm_default_best_worker(const fm_worker_snapshot_t *candidates,
+                             int n_candidates,
+                             char *out_uuid,
+                             void *user_data)
+{
+    (void)user_data;
+
+    out_uuid[0] = '\0';
+
+    if (!candidates || n_candidates <= 0)
         return;
-    }
 
-    node->state = new_state;
-    pthread_mutex_unlock(&node->lock);
+    float best_score = -1.0f;
+    int   best_idx   = -1;
 
-    fprintf(stderr,
-            "[STATE] node=%s role=%-9s  %s → %s  reason=%s\n",
-            node->uuid,
-            node_role_str(node->role),
-            node_state_str(old_state),
-            node_state_str(new_state),
-            reason ? reason : "n/a");
+    for (int i = 0; i < n_candidates; i++) {
+        const fm_worker_snapshot_t *w = &candidates[i];
 
-    if (ctx->on_state_change)
-        ctx->on_state_change(node, old_state, new_state);
-}
+        /* Ignorer les nœuds non actifs */
+        if (w->status != NODE_ACTIF)
+            continue;
 
-/* ─────────────────────────────────────────────────────────────
- * SECTION 4 — INITIALISATION / DESTRUCTION
- * ───────────────────────────────────────────────────────────── */
+        /* Ignorer les nœuds déjà surchargés */
+        if (w->cpu_usage > FM_CPU_OVERLOAD || w->ram_usage > FM_RAM_OVERLOAD)
+            continue;
 
-/*
- * ft_init
- * Initialise le contexte du nœud local.
- * - Génère un UUID unique
- * - Positionne l'état initial
- * - Initialise les mutex
- */
-int ft_init(NodeContext *ctx, NodeRole role, const char *ip, uint16_t port)
-{
-    if (!ctx || !ip) return -1;
+        float score = (1.0f - w->cpu_usage) * (1.0f - w->ram_usage);
 
-    memset(ctx, 0, sizeof(NodeContext));
-
-    ft_generate_uuid(ctx->self.uuid);
-    snprintf(ctx->self.name, sizeof(ctx->self.name), "node-%s", ctx->self.uuid);
-    strncpy(ctx->self.ip, ip, MAX_IP_LEN - 1);
-    ctx->self.port       = port;
-    ctx->self.role       = role;
-    ctx->self.state      = NODE_STATE_DISCONNECTED;
-    ctx->self.socket_fd  = -1;
-    ctx->running         = true;
-
-    /* Initialisation de toutes les ressources à zéro */
-    clock_gettime(CLOCK_MONOTONIC, &ctx->self.last_heartbeat);
-
-    if (pthread_mutex_init(&ctx->self.lock, NULL) != 0) {
-        perror("pthread_mutex_init(self.lock)");
-        return -1;
-    }
-    if (pthread_mutex_init(&ctx->cluster_lock, NULL) != 0) {
-        perror("pthread_mutex_init(cluster_lock)");
-        pthread_mutex_destroy(&ctx->self.lock);
-        return -1;
-    }
-
-    /* Initialisation des mutex de chaque slot worker */
-    for (int i = 0; i < MAX_WORKERS; i++) {
-        ctx->workers[i].socket_fd = -1;
-        if (pthread_mutex_init(&ctx->workers[i].lock, NULL) != 0) {
-            /* Nettoyage en cas d'échec partiel */
-            for (int j = 0; j < i; j++)
-                pthread_mutex_destroy(&ctx->workers[j].lock);
-            pthread_mutex_destroy(&ctx->cluster_lock);
-            pthread_mutex_destroy(&ctx->self.lock);
-            return -1;
+        if (score > best_score) {
+            best_score = score;
+            best_idx   = i;
         }
     }
 
-    fprintf(stderr,
-            "[INIT] Node UUID=%s role=%s ip=%s port=%u\n",
-            ctx->self.uuid, node_role_str(role), ip, port);
-    return 0;
+    if (best_idx >= 0) {
+        strncpy(out_uuid, candidates[best_idx].uuid, FM_UUID_LEN - 1);
+        out_uuid[FM_UUID_LEN - 1] = '\0';
+
+        fprintf(stderr,
+                "[FaultManager] Meilleur nœud : uuid=%.8s... score=%.3f "
+                "(cpu=%.1f%% ram=%.1f%%)\n",
+                out_uuid,
+                best_score,
+                candidates[best_idx].cpu_usage * 100.0f,
+                candidates[best_idx].ram_usage * 100.0f);
+    } else {
+        fprintf(stderr,
+                "[FaultManager] Aucun nœud disponible pour migration.\n");
+    }
 }
 
-/*
- * ft_destroy
- * Libère toutes les ressources du contexte.
- */
-void ft_destroy(NodeContext *ctx)
+/* ─────────────────────────────────────────────────────────────────────
+ * SECTION 4 — RÉCEPTION D'UN HEARTBEAT
+ *
+ * Appelé par state_receiver ou la couche réseau à chaque NetworkMessage
+ * de type MSG_HEARTBEAT ou MSG_HEARTBEAT_INIT.
+ *
+ * Met à jour last_heartbeat et les métriques du nœud dans NodeTable,
+ * puis recalcule le NodeStatus (NODE_ACTIF / NODE_SURCHARGE).
+ *
+ * Si le nœud est le maître primaire (contexte secondaire) :
+ *   met à jour master_last_seen pour réinitialiser le watchdog.
+ * ───────────────────────────────────────────────────────────────────── */
+
+void fm_on_heartbeat_received(fm_context_t        *ctx,
+                               const NetworkMessage *msg)
 {
-    if (!ctx) return;
+    if (!ctx || !msg) return;
 
-    ctx->running = false;
+    /* ── Mise à jour dans NodeTable ─────────────────────────────────── */
+    pthread_mutex_lock(&ctx->node_table->lock);
 
-    /* Fermeture des sockets ouvertes */
-    if (ctx->self.socket_fd >= 0) {
-        close(ctx->self.socket_fd);
-        ctx->self.socket_fd = -1;
-    }
-    for (int i = 0; i < ctx->worker_count; i++) {
-        if (ctx->workers[i].socket_fd >= 0) {
-            close(ctx->workers[i].socket_fd);
-            ctx->workers[i].socket_fd = -1;
+    NodeInfo *node = node_table_find(ctx->node_table, msg->uuid);
+    if (!node) {
+        /* Nœud inconnu : on l'enregistre à la volée.
+         * En production, ce cas est géré par MSG_HELLO. On l'insère
+         * ici pour la robustesse (heartbeat avant HELLO). */
+        node = node_table_add(ctx->node_table, msg->uuid,
+                              msg->ip, msg->port);
+        if (!node) {
+            pthread_mutex_unlock(&ctx->node_table->lock);
+            fprintf(stderr,
+                    "[FaultManager] WARN : impossible d'ajouter nœud %s\n",
+                    msg->uuid);
+            return;
         }
-        pthread_mutex_destroy(&ctx->workers[i].lock);
+        fprintf(stderr,
+                "[FaultManager] Nouveau nœud enregistré via heartbeat : "
+                "uuid=%.8s... ip=%s\n", msg->uuid, msg->ip);
     }
 
-    pthread_mutex_destroy(&ctx->cluster_lock);
-    pthread_mutex_destroy(&ctx->self.lock);
-}
+    /* Mise à jour des métriques dynamiques */
+    node->last_heartbeat       = time(NULL);
+    node->metrics.cpu_usage    = msg->cpu_usage;
+    node->metrics.ram_usage    = msg->ram_usage;
+    node->metrics.ram_used_mb  = msg->ram_used_mb;
+    node->metrics.disk_usage   = msg->disk_usage;
+    node->metrics.disk_used_gb = msg->disk_used_gb;
+    node->metrics.queue_len    = msg->queue_len;
+    node->metrics.score        = msg->score;
+    node->metrics.load_avg     = msg->load_avg;
 
-/* ─────────────────────────────────────────────────────────────
- * SECTION 5 — HEARTBEAT
- * ───────────────────────────────────────────────────────────── */
-
-/*
- * heartbeat_send_loop
- * Thread d'envoi de heartbeat : s'exécute toutes les
- * HEARTBEAT_INTERVAL_MS ms tant que le contexte tourne.
- * Envoie simplement l'UUID local via UDP (remplaçable par gRPC).
- */
-static void *heartbeat_send_loop(void *arg)
-{
-    NodeContext *ctx = (NodeContext *)arg;
-
-    /* Création d'un socket UDP pour l'envoi */
-    int sock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock < 0) {
-        perror("heartbeat socket");
-        return NULL;
+    /* Recalcul du statut */
+    if (msg->cpu_usage > FM_CPU_OVERLOAD || msg->ram_usage > FM_RAM_OVERLOAD) {
+        node->status = NODE_SURCHARGE;
+    } else {
+        /* Remettre actif même s'il était SUSPECT (heartbeat reçu) */
+        if (node->status == NODE_SUSPECT || node->status == NODE_EN_PANNE)
+            fprintf(stderr,
+                    "[FaultManager] Nœud %.8s... récupéré → NODE_ACTIF\n",
+                    msg->uuid);
+        node->status = NODE_ACTIF;
     }
 
-    while (ctx->running) {
-        /* -- envoi au maître -- */
-        if (ctx->self.role != NODE_ROLE_MASTER &&
-            ctx->master.state == NODE_STATE_ACTIVE)
-        {
-            struct sockaddr_in dest;
-            memset(&dest, 0, sizeof(dest));
-            dest.sin_family      = AF_INET;
-            dest.sin_port        = htons(ctx->master.port);
-            inet_pton(AF_INET, ctx->master.ip, &dest.sin_addr);
-
-            /* Le payload heartbeat = UUID (37 octets) */
-            sendto(sock, ctx->self.uuid, UUID_STR_LEN, 0,
-                   (struct sockaddr *)&dest, sizeof(dest));
-        }
-
-        /* Mise à jour du propre heartbeat local */
-        clock_gettime(CLOCK_MONOTONIC, &ctx->self.last_heartbeat);
-
-        ft_sleep_ms(HEARTBEAT_INTERVAL_MS);
+    /* Hardware (MSG_HEARTBEAT_INIT uniquement) */
+    if (msg->type == MSG_HEARTBEAT_INIT && !node->hardware.initialized) {
+        node->hardware.cpu_cores            = msg->cpu_cores;
+        node->hardware.cpu_threads_per_core = msg->cpu_threads_per_core;
+        node->hardware.cpu_freq_mhz         = msg->cpu_freq_mhz;
+        node->hardware.ram_total_mb         = msg->ram_total_mb;
+        node->hardware.disk_total_gb        = msg->disk_total_gb;
+        strncpy(node->hardware.cpu_model,
+                msg->cpu_model,     sizeof(node->hardware.cpu_model)     - 1);
+        strncpy(node->hardware.disk_mount,
+                msg->disk_mount,    sizeof(node->hardware.disk_mount)    - 1);
+        strncpy(node->hardware.network_iface,
+                msg->network_iface, sizeof(node->hardware.network_iface) - 1);
+        node->hardware.initialized = 1;
     }
 
-    close(sock);
-    return NULL;
-}
+    pthread_mutex_unlock(&ctx->node_table->lock);
 
-/*
- * heartbeat_check_loop
- * Thread de surveillance : vérifie périodiquement que chaque nœud
- * connu a bien envoyé un heartbeat récent.
- * Si ce n'est pas le cas → ft_check_all_nodes() est appelé.
- */
-static void *heartbeat_check_loop(void *arg)
-{
-    NodeContext *ctx = (NodeContext *)arg;
-
-    while (ctx->running) {
-        ft_sleep_ms(HEARTBEAT_INTERVAL_MS);
-        ft_check_all_nodes(ctx);
-    }
-    return NULL;
-}
-
-static pthread_t g_hb_send_thread;
-static pthread_t g_hb_check_thread;
-
-int ft_heartbeat_start(NodeContext *ctx)
-{
-    if (pthread_create(&g_hb_send_thread, NULL, heartbeat_send_loop, ctx)) {
-        perror("pthread_create heartbeat_send");
-        return -1;
-    }
-    if (pthread_create(&g_hb_check_thread, NULL, heartbeat_check_loop, ctx)) {
-        perror("pthread_create heartbeat_check");
-        ctx->running = false;
-        pthread_join(g_hb_send_thread, NULL);
-        return -1;
-    }
-    pthread_detach(g_hb_send_thread);
-    pthread_detach(g_hb_check_thread);
-    fprintf(stderr, "[HEARTBEAT] Surveillance démarrée (interval=%d ms, timeout=%d ms)\n",
-            HEARTBEAT_INTERVAL_MS, HEARTBEAT_TIMEOUT_MS);
-    return 0;
-}
-
-void ft_heartbeat_stop(NodeContext *ctx)
-{
-    ctx->running = false;
-}
-
-/*
- * ft_heartbeat_received
- * Appelé par la couche réseau lorsqu'un heartbeat arrive.
- * Met à jour le timestamp du nœud émetteur.
- */
-void ft_heartbeat_received(NodeContext *ctx, const char *node_uuid)
-{
-    if (!ctx || !node_uuid) return;
-
-    pthread_mutex_lock(&ctx->cluster_lock);
-
-    for (int i = 0; i < ctx->worker_count; i++) {
-        if (strncmp(ctx->workers[i].uuid, node_uuid, UUID_STR_LEN) == 0) {
-            clock_gettime(CLOCK_MONOTONIC, &ctx->workers[i].last_heartbeat);
-
-            /* Si le nœud revenait d'une panne → le marquer actif */
-            if (ctx->workers[i].state == NODE_STATE_FAILED ||
-                ctx->workers[i].state == NODE_STATE_DISCONNECTED)
-            {
-                pthread_mutex_unlock(&ctx->cluster_lock);
-                ft_node_set_state(ctx, &ctx->workers[i],
-                                  NODE_STATE_ACTIVE,
-                                  "heartbeat_received_after_failure");
-                return;
-            }
-            break;
-        }
-    }
-
-    /* Vérifier aussi le secondaire */
-    if (strncmp(ctx->secondary.uuid, node_uuid, UUID_STR_LEN) == 0)
-        clock_gettime(CLOCK_MONOTONIC, &ctx->secondary.last_heartbeat);
-
-    pthread_mutex_unlock(&ctx->cluster_lock);
-}
-
-/* ─────────────────────────────────────────────────────────────
- * SECTION 6 — DÉTECTION DE PANNES
- * ───────────────────────────────────────────────────────────── */
-
-/*
- * ft_is_node_alive
- * Retourne true si le dernier heartbeat du nœud est dans le délai.
- */
-bool ft_is_node_alive(const ClusterNode *node)
-{
-    if (!node) return false;
-    if (node->state == NODE_STATE_MAINTENANCE) return true; /* pas surveillé */
-
-    int64_t elapsed = ft_elapsed_ms(&node->last_heartbeat);
-    return elapsed < (int64_t)HEARTBEAT_TIMEOUT_MS;
-}
-
-/*
- * ft_is_overloaded
- * Retourne true si le nœud dépasse l'un des seuils de charge.
- */
-bool ft_is_overloaded(const ClusterNode *node)
-{
-    if (!node) return false;
-    return (node->resources.cpu_load > CPU_OVERLOAD_THRESHOLD) ||
-           ((float)node->resources.ram_available_mb /
-            (float)(node->resources.ram_total_mb + 1)
-            < (1.0f - MEM_OVERLOAD_THRESHOLD));
-}
-
-/*
- * ft_check_all_nodes
- * Parcourt tous les nœuds connus et déclenche les actions de
- * récupération appropriées selon le rôle du nœud défaillant.
- * Appelé périodiquement par heartbeat_check_loop.
- */
-void ft_check_all_nodes(NodeContext *ctx)
-{
-    if (!ctx) return;
-
-    /* ── Vérification des workers (vu du maître ou du secondaire) ── */
-    pthread_mutex_lock(&ctx->cluster_lock);
-    int wcount = ctx->worker_count;
-    pthread_mutex_unlock(&ctx->cluster_lock);
-
-    for (int i = 0; i < wcount; i++) {
-
-        ClusterNode *w = &ctx->workers[i];
-        pthread_mutex_lock(&w->lock);
-        NodeState ws = w->state;
-        bool alive    = ft_is_node_alive(w);
-        bool overload = ft_is_overloaded(w);
-        pthread_mutex_unlock(&w->lock);
-
-        if (ws == NODE_STATE_FAILED || ws == NODE_STATE_DISCONNECTED)
-            continue;  /* déjà signalé */
-
-        if (!alive && ws == NODE_STATE_ACTIVE) {
-            /* Panne : heartbeat manquant */
-            FaultEvent evt = {
-                .type             = FAULT_HEARTBEAT_LOSS,
-                .node_role        = NODE_ROLE_WORKER,
-                .timestamp        = time(NULL),
-                .suggested_action = RECOVERY_MIGRATE_TASK
-            };
-            FT_COPY_UUID(evt.node_uuid, w->uuid);
-            snprintf(evt.detail, LOG_BUFFER_SIZE,
-                     "Heartbeat absent depuis >%d ms", HEARTBEAT_TIMEOUT_MS);
-
-            ft_node_set_state(ctx, w, NODE_STATE_FAILED, "heartbeat_timeout");
-            ft_log_fault(ctx, &evt);
-
-            if (ctx->self.role == NODE_ROLE_MASTER)
-                ft_master_handle_worker_failure(ctx, w->uuid);
-
-        } else if (overload && ws == NODE_STATE_ACTIVE) {
-            /* Surcharge détectée */
-            FaultType ft = (w->resources.cpu_load > CPU_OVERLOAD_THRESHOLD)
-                           ? FAULT_CPU_OVERLOAD : FAULT_MEM_OVERLOAD;
-            FaultEvent evt = {
-                .type             = ft,
-                .node_role        = NODE_ROLE_WORKER,
-                .timestamp        = time(NULL),
-                .suggested_action = RECOVERY_THROTTLE_LOAD
-            };
-            FT_COPY_UUID(evt.node_uuid, w->uuid);
-            snprintf(evt.detail, LOG_BUFFER_SIZE,
-                     "cpu=%.1f%% ram_used=%uMB/%uMB",
-                     w->resources.cpu_load * 100.0f,
-                     w->resources.ram_total_mb - w->resources.ram_available_mb,
-                     w->resources.ram_total_mb);
-
-            ft_node_set_state(ctx, w, NODE_STATE_OVERLOADED, "resource_threshold");
-            ft_log_fault(ctx, &evt);
-        }
-    }
-
-    /* ── Vérification du maître (vu du secondaire) ── */
-    if (ctx->self.role == NODE_ROLE_SECONDARY) {
-        bool master_alive = ft_is_node_alive(&ctx->master);
-
-        if (!master_alive &&
-            ctx->master.state != NODE_STATE_FAILED &&
-            ctx->master.state != NODE_STATE_DISCONNECTED)
-        {
-            FaultEvent evt = {
-                .type             = FAULT_MASTER_DOWN,
-                .node_role        = NODE_ROLE_MASTER,
-                .timestamp        = time(NULL),
-                .suggested_action = RECOVERY_PROMOTE_SECONDARY
-            };
-            FT_COPY_UUID(evt.node_uuid, ctx->master.uuid);
-            snprintf(evt.detail, LOG_BUFFER_SIZE,
-                     "Maître injoignable depuis >%d ms", HEARTBEAT_TIMEOUT_MS);
-
-            ft_node_set_state(ctx, &ctx->master,
-                              NODE_STATE_FAILED, "master_heartbeat_timeout");
-            ft_log_fault(ctx, &evt);
-            ft_secondary_handle_master_down(ctx);
-        }
-    }
-
-    /* ── Vérification du secondaire (vu du maître) ── */
-    if (ctx->self.role == NODE_ROLE_MASTER) {
-        bool sec_alive = ft_is_node_alive(&ctx->secondary);
-
-        if (!sec_alive &&
-            ctx->secondary.state == NODE_STATE_ACTIVE)
-        {
-            FaultEvent evt = {
-                .type             = FAULT_SECONDARY_DOWN,
-                .node_role        = NODE_ROLE_SECONDARY,
-                .timestamp        = time(NULL),
-                .suggested_action = RECOVERY_ELECT_NEW_MASTER
-            };
-            FT_COPY_UUID(evt.node_uuid, ctx->secondary.uuid);
-            snprintf(evt.detail, LOG_BUFFER_SIZE,
-                     "Secondaire injoignable, cluster sans hot-standby");
-
-            ft_node_set_state(ctx, &ctx->secondary,
-                              NODE_STATE_FAILED, "secondary_heartbeat_timeout");
-            ft_log_fault(ctx, &evt);
-            /* Déclenchement d'une élection pour désigner un nouveau secondaire */
-            ft_master_trigger_election(ctx);
-        }
-    }
+    /* ── Si c'est le maître : réinitialiser master_last_seen ────────── */
+    pthread_mutex_lock(&ctx->lock);
+    if (strncmp(ctx->master_uuid, msg->uuid, FM_UUID_LEN) == 0)
+        ctx->master_last_seen = time(NULL);
+    pthread_mutex_unlock(&ctx->lock);
 }
