@@ -10,6 +10,89 @@
 // Compiler avec : gcc ... -lpsapi -liphlpapi -lpdh
 
 // ============================================================
+// STATIC METRICS — lues une seule fois
+// ============================================================
+void monitoring_read_static(MachineMetrics *m) {
+    // ===== CPU model =====
+    HKEY hKey;
+    if (RegOpenKeyExA(HKEY_LOCAL_MACHINE,
+        "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0",
+        0, KEY_READ, &hKey) == ERROR_SUCCESS) {
+        DWORD size = sizeof(m->cpu_model);
+        RegQueryValueExA(hKey, "ProcessorNameString", NULL, NULL,
+                         (LPBYTE)m->cpu_model, &size);
+        RegCloseKey(hKey);
+    }
+
+    // ===== CPU cores + threads =====
+    SYSTEM_INFO si;
+    GetSystemInfo(&si);
+    m->cpu_threads_per_core = (int)si.dwNumberOfProcessors;
+
+    // Cores physiques via GetLogicalProcessorInformation
+    DWORD buf_size = 0;
+    GetLogicalProcessorInformation(NULL, &buf_size);
+    SYSTEM_LOGICAL_PROCESSOR_INFORMATION *buf =
+        (SYSTEM_LOGICAL_PROCESSOR_INFORMATION *)malloc(buf_size);
+    if (buf && GetLogicalProcessorInformation(buf, &buf_size)) {
+        int cores = 0;
+        DWORD count = buf_size / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+        for (DWORD i = 0; i < count; i++)
+            if (buf[i].Relationship == RelationProcessorCore) cores++;
+        m->cpu_cores = cores;
+        m->cpu_threads_per_core = (cores > 0)
+            ? (int)si.dwNumberOfProcessors / cores : (int)si.dwNumberOfProcessors;
+    }
+    free(buf);
+
+    // ===== CPU frequency =====
+    HKEY hKey2;
+    if (RegOpenKeyExA(HKEY_LOCAL_MACHINE,
+        "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0",
+        0, KEY_READ, &hKey2) == ERROR_SUCCESS) {
+        DWORD freq = 0, size = sizeof(freq);
+        RegQueryValueExA(hKey2, "~MHz", NULL, NULL, (LPBYTE)&freq, &size);
+        m->cpu_freq_mhz = (float)freq;
+        RegCloseKey(hKey2);
+    }
+
+    // ===== Memory total =====
+    MEMORYSTATUSEX mem_status;
+    mem_status.dwLength = sizeof(mem_status);
+    if (GlobalMemoryStatusEx(&mem_status))
+        m->mem_total_mb = (long)(mem_status.ullTotalPhys / (1024 * 1024));
+
+    // ===== Disk total + mount =====
+    ULARGE_INTEGER total_bytes;
+    if (GetDiskFreeSpaceExA("C:\\", NULL, &total_bytes, NULL))
+        m->disk_total_mb = (long)(total_bytes.QuadPart / (1024 * 1024));
+    strncpy(m->disk_mount, "C:\\", sizeof(m->disk_mount) - 1);
+
+    // ===== Network interface =====
+    MIB_IFTABLE *if_table = NULL;
+    DWORD size2 = 0;
+    GetIfTable(NULL, &size2, FALSE);
+    if_table = (MIB_IFTABLE *)malloc(size2);
+    if (if_table && GetIfTable(if_table, &size2, FALSE) == NO_ERROR) {
+        for (DWORD i = 0; i < if_table->dwNumEntries; i++) {
+            MIB_IFROW *row = &if_table->table[i];
+            if (row->dwType == IF_TYPE_SOFTWARE_LOOPBACK) continue;
+            if (row->dwOperStatus != IF_OPER_STATUS_OPERATIONAL) continue;
+            // Convertir le nom wide en char
+            WideCharToMultiByte(CP_ACP, 0, row->wszName, -1,
+                                m->network_iface, sizeof(m->network_iface),
+                                NULL, NULL);
+            break;
+        }
+    }
+    free(if_table);
+}
+
+// ============================================================
+// DYNAMIC METRICS — lues à chaque cycle
+// ============================================================
+
+// ============================================================
 // CPU USAGE
 // ============================================================
 static void read_cpu_usage(MachineMetrics *metrics) {
@@ -32,10 +115,9 @@ static void read_cpu_usage(MachineMetrics *metrics) {
 
     // kernel_time inclut idle_time sur Windows
     ULONGLONG delta_total = delta_kernel + delta_user;
-    ULONGLONG delta_busy  = delta_total  - delta_idle;
 
     if (delta_total > 0)
-        metrics->cpu_usage = (float)delta_busy / delta_total * 100.0f;
+        metrics->cpu_usage = (1.0f - (float)delta_idle / delta_total) * 100.0f;
     else
         metrics->cpu_usage = 0.0f;
 
@@ -53,10 +135,12 @@ static void read_memory(MachineMetrics *metrics) {
 
     if (!GlobalMemoryStatusEx(&mem_status)) return;
 
-    metrics->mem_total_gb     = mem_status.ullTotalPhys     / (1024.0f * 1024.0f * 1024.0f);
-    metrics->mem_free_gb      = mem_status.ullAvailPhys     / (1024.0f * 1024.0f * 1024.0f);
-    metrics->mem_available_gb = metrics->mem_free_gb;
-    metrics->mem_used_gb      = metrics->mem_total_gb - metrics->mem_free_gb;
+    long free_mb = (long)(mem_status.ullAvailPhys / (1024 * 1024));
+    metrics->mem_available_mb = (float)free_mb;
+    metrics->mem_used_mb      = metrics->mem_total_mb - free_mb;
+    metrics->mem_usage        = (metrics->mem_total_mb > 0) 
+        ? ((float)metrics->mem_used_mb / metrics->mem_total_mb) * 100.0f
+        : 0.0f;
 }
 
 // ============================================================
@@ -67,10 +151,11 @@ static void read_disk(MachineMetrics *metrics) {
     static long prev_time = 0;
 
     // Espace disque sur C:\
+
     ULARGE_INTEGER free_bytes, total_bytes;
     if (GetDiskFreeSpaceExA("C:\\", NULL, &total_bytes, &free_bytes)) {
-        metrics->disk_total_gb = total_bytes.QuadPart / (1024.0f * 1024.0f * 1024.0f);
-        metrics->disk_free_gb  = free_bytes.QuadPart  / (1024.0f * 1024.0f * 1024.0f);
+        long used_bytes = total_bytes.QuadPart - free_bytes.QuadPart;
+        metrics->disk_used_mb  = (long)(used_bytes / (1024 * 1024));
     }
 
     // IO usage via performance counters (PDH)
@@ -172,8 +257,8 @@ static void compute_flags(MachineMetrics *metrics) {
         return;
     }
 
-    if (metrics->mem_total_gb > 0.0f) {
-        float mem_usage_percent = (metrics->mem_used_gb / metrics->mem_total_gb) * 100.0f;
+    if (metrics->mem_total_mb > 0.0f) {
+        float mem_usage_percent = (metrics->mem_used_mb / metrics->mem_total_mb) * 100.0f;
         if (mem_usage_percent > OVERLOAD_MEM_THRESHOLD)
             metrics->is_overloaded = 1;
     }

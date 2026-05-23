@@ -43,7 +43,7 @@ typedef struct {
     float ram_usage;
     long  ram_used_mb;
     float disk_usage;
-    long  disk_used_gb;
+    long  disk_used_mb;
     int   queue_len;
     float score;
     float load_avg;

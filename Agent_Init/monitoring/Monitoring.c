@@ -19,6 +19,7 @@
 static MachineMetrics latest_metrics;
 static pthread_mutex_t metrics_mutex = PTHREAD_MUTEX_INITIALIZER;
 static volatile int monitoring_running = 1;
+static int first_run = 1;
 
 void *monitoring_thread_run(void *arg){
     (void)arg; // avoids warning "Unused parameter"
@@ -26,6 +27,12 @@ void *monitoring_thread_run(void *arg){
     while(monitoring_running){
         MachineMetrics m;
         memset(&m, 0, sizeof(MachineMetrics)); // Initialize all fields to zero
+
+        // Read static metrics only on first iteration
+        if (first_run) {
+            monitoring_read_static(&m);
+            first_run = 0;
+        }
 
         // Read all metrics
         read_cpu_usage(&m);

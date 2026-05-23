@@ -15,6 +15,69 @@
 #include <mach/mach_host.h>
 
 // ============================================================
+// STATIC METRICS — lues une seule fois
+// ============================================================
+void monitoring_read_static(MachineMetrics *m) {
+    // ===== CPU model, cores, frequency =====
+    char cpu_model[128] = {0};
+    size_t len = sizeof(cpu_model);
+    sysctlbyname("machdep.cpu.brand_string", cpu_model, &len, NULL, 0);
+    strncpy(m->cpu_model, cpu_model, sizeof(m->cpu_model) - 1);
+
+    int cpu_cores = 0;
+    len = sizeof(cpu_cores);
+    sysctlbyname("hw.physicalcpu", &cpu_cores, &len, NULL, 0);
+    m->cpu_cores = cpu_cores;
+
+    int cpu_threads = 0;
+    len = sizeof(cpu_threads);
+    sysctlbyname("hw.logicalcpu", &cpu_threads, &len, NULL, 0);
+    m->cpu_threads_per_core = (cpu_cores > 0) ? cpu_threads / cpu_cores : cpu_threads;
+
+    uint64_t cpu_freq = 0;
+    len = sizeof(cpu_freq);
+    sysctlbyname("hw.cpufrequency", &cpu_freq, &len, NULL, 0);
+    m->cpu_freq_mhz = cpu_freq / 1000000.0f;
+
+    // ===== Memory total =====
+    uint64_t mem_total = 0;
+    len = sizeof(mem_total);
+    int mib[2] = { CTL_HW, HW_MEMSIZE };
+    sysctl(mib, 2, &mem_total, &len, NULL, 0);
+    m->mem_total_mb = mem_total / (1024 * 1024);
+
+    // ===== Disk total + mount =====
+    struct statvfs st;
+    if (statvfs("/", &st) == 0)
+        m->disk_total_mb = (st.f_blocks * st.f_frsize) / (1024 * 1024);
+    strncpy(m->disk_mount, "/", sizeof(m->disk_mount) - 1);
+
+    // ===== Network interface =====
+    // Prendre la première interface non-loopback via sysctl
+    struct ifmibdata ifmd;
+    int mib_net[6] = { CTL_NET, PF_LINK, NETLINK_GENERIC, IFMIB_IFDATA, 0, IFDATA_GENERAL };
+    int if_count = 0;
+    size_t if_count_len = sizeof(if_count);
+    int mib_count[4] = { CTL_NET, PF_LINK, NETLINK_GENERIC, IFMIB_SYSTEM };
+    sysctl(mib_count, 4, &if_count, &if_count_len, NULL, 0);
+
+    for (int i = 1; i <= if_count; i++) {
+        mib_net[4] = i;
+        len = sizeof(ifmd);
+        if (sysctl(mib_net, 6, &ifmd, &len, NULL, 0) == 0) {
+            if (strcmp(ifmd.ifmd_name, "lo0") == 0) continue;
+            strncpy(m->network_iface, ifmd.ifmd_name, sizeof(m->network_iface) - 1);
+            break;
+        }
+    }
+}
+
+
+// ============================================================
+// DYNAMIC METRICS — lues à chaque cycle
+// ============================================================
+
+// ============================================================
 // CPU USAGE
 // ============================================================
 static void read_cpu_usage(MachineMetrics *metrics) {
@@ -56,7 +119,6 @@ static void read_memory(MachineMetrics *metrics) {
     uint64_t mem_total = 0;
     size_t len = sizeof(mem_total);
     sysctl(mib, 2, &mem_total, &len, NULL, 0);
-    metrics->mem_total_gb = mem_total / (1024.0f * 1024.0f * 1024.0f);
 
     // Used/free via mach
     vm_size_t page_size;
@@ -67,12 +129,13 @@ static void read_memory(MachineMetrics *metrics) {
     host_statistics64(mach_host_self(), HOST_VM_INFO64,
                       (host_info64_t)&vm_stats, &vm_count);
 
-    uint64_t free_mem = (vm_stats.free_count + vm_stats.inactive_count) * page_size;
-    uint64_t used_mem = mem_total - free_mem;
+    uint64_t free_mem = (vm_stats.free_count + vm_stats.inactive_count) * page_size / (1024 * 1024);
 
-    metrics->mem_free_gb      = free_mem / (1024.0f * 1024.0f * 1024.0f);
-    metrics->mem_used_gb      = used_mem / (1024.0f * 1024.0f * 1024.0f);
-    metrics->mem_available_gb = metrics->mem_free_gb;
+    metrics->mem_available_mb = (float)free_mem;
+    metrics->mem_used_mb      = metrics->mem_total_mb - free_mem;
+    metrics->mem_usage        = (metrics->mem_total_mb > 0) 
+        ? ((float)metrics->mem_used_mb / metrics->mem_total_mb) * 100.0f
+        : 0.0f;
 }
 
 // ============================================================
@@ -82,8 +145,7 @@ static void read_disk(MachineMetrics *metrics) {
     // Espace disque via statvfs (identique à Linux)
     struct statvfs st;
     if (statvfs("/", &st) == 0) {
-        metrics->disk_total_gb = (st.f_blocks * st.f_frsize) / (1024.0f * 1024.0f * 1024.0f);
-        metrics->disk_free_gb  = (st.f_bfree  * st.f_frsize) / (1024.0f * 1024.0f * 1024.0f);
+        metrics->disk_used_mb  = ((st.f_blocks - st.f_bfree) * st.f_frsize) / (1024 * 1024);
     }
 
     // IO usage : non disponible nativement sans IOKit (framework Objective-C)
@@ -191,8 +253,8 @@ static void compute_flags(MachineMetrics *metrics) {
         return;
     }
 
-    if (metrics->mem_total_gb > 0.0f) {
-        float mem_usage_percent = (metrics->mem_used_gb / metrics->mem_total_gb) * 100.0f;
+    if (metrics->mem_total_mb > 0.0f) {
+        float mem_usage_percent = (metrics->mem_used_mb / metrics->mem_total_mb) * 100.0f;
         if (mem_usage_percent > OVERLOAD_MEM_THRESHOLD)
             metrics->is_overloaded = 1;
     }
