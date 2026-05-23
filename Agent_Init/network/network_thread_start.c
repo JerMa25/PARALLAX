@@ -24,7 +24,7 @@ static void handle_msg(net_state_t *st, char *buf)
     }
 }
 
-int network_thread_start(net_state_t *st, const char *config_path)
+int network_thread_run(net_state_t *st, const char *config_path)
 {
     struct mq_attr a = { .mq_maxmsg = 10, .mq_msgsize = MAX_MSG };
     memset(st, 0, sizeof(*st));

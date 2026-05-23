@@ -22,7 +22,7 @@ void *add(void *arg);
 void *square(void *arg);
 fn matcher(char *nom_fonction);
 
-void *worker_thread_run(void *arg);
-void worker_stop();
+void *execution_thread_run(void *arg);
+void execution_stop();
 
 #endif

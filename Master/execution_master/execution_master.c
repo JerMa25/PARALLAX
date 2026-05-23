@@ -51,10 +51,10 @@ uint64_t em_generate_job_id(void)
 
 /* ── Cycle de vie ─────────────────────────────────────────────────────────── */
 
-int em_init(const em_config_t *config)
+int execution_master_thread_run(const em_config_t *config)
 {
     if (g_initialized) {
-        em_log("WARN", "em_init() appelé deux fois, ignoré.");
+        em_log("WARN", "execution_master_thread_run() appelé deux fois, ignoré.");
         return 0;
     }
 
@@ -70,7 +70,7 @@ int em_init(const em_config_t *config)
     return 0;
 }
 
-void em_shutdown(void)
+void execution_master_stop(void)
 {
     if (!g_initialized)
         return;

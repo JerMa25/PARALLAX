@@ -1,14 +1,13 @@
 #include "init.h"
 
-/**
- * #include "../monitoring/monitoring.h"
-#include "../network/network.h"
-#include "../execution/execution.h"
-#include "../controller/state_receiver/state_receiver.h"
-#include "../controller/panne/panne.h"
-#include "../master/orchestrator/orchestrator.h"
-#include "../master/parser/parser.h"
-**/
+#include "monitoring/Monitoring.h"
+#include "../network/network_thread_start.h"
+#include "../network/network_thread_shutdown.h"
+#include "../Worker/execution/fonctions.h"
+#include "../Controller/state_receiver/state_receiver.h"
+#include "../Master/orchestrator/orchestrator.h"
+#include "../Master/execution_master/execution_master.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,23 +18,6 @@
 // ===== PRIVATE STATE =====
 static AgentState agent;
 static volatile int agent_running = 1;
-
-// STUBS - à retirer quand les vrais modules seront prêts
-static void *network_thread_run(void *arg)        { (void)arg; return NULL; }
-static void *execution_thread_run(void *arg)       { (void)arg; return NULL; }
-static void *state_receiver_thread_run(void *arg)  { (void)arg; return NULL; }
-static void *breakdown_thread_run(void *arg)       { (void)arg; return NULL; }
-static void *orchestrator_thread_run(void *arg)    { (void)arg; return NULL; }
-static void *parser_thread_run(void *arg)          { (void)arg; return NULL; }
-static void *monitoring_thread_run(void *arg)       { (void)arg; return NULL; }
-
-static void network_stop(void)        {}
-static void execution_stop(void)      {}
-static void state_receiver_stop(void) {}
-static void breakdown_stop(void)      {}
-static void orchestrator_stop(void)   {}
-static void parser_stop(void)         {}
-static void monitoring_stop(void)     {}
 
 // ===== PRIVATE FUNCTIONS =====
 static void generate_uuid(char *uuid){
@@ -141,29 +123,29 @@ static void start_threads(void){
             printf("[THREAD] State Receiver thread started\n");
         }
 
-        if (!agent.threads.breakdown_active) {
+        /*if (!agent.threads.breakdown_active) {
             pthread_create(&agent.threads.breakdown, NULL, breakdown_thread_run, NULL);
             agent.threads.breakdown_active = 1;
             printf("[THREAD] Breakdown thread started\n");
-        }
+        }*/
         break;
 
     case ROLE_MASTER:
-        if (!agent.threads.orchestrator_active) {
+        /*if (!agent.threads.orchestrator_active) {
             pthread_create(&agent.threads.orchestrator, NULL, orchestrator_thread_run, NULL);
             agent.threads.orchestrator_active = 1;
             printf("[THREAD] Orchestrator thread started\n");
-        }
+        }*/
         if (!agent.threads.parser_active) {
-            pthread_create(&agent.threads.parser, NULL, parser_thread_run, NULL);
+            pthread_create(&agent.threads.parser, NULL, execution_master_thread_run, NULL);
             agent.threads.parser_active = 1;
-            printf("[THREAD] Parser thread started\n");
+            printf("[THREAD] Execution Master thread started\n");
         }
-        if (!agent.threads.breakdown_active) {
+        /*if (!agent.threads.breakdown_active) {
             pthread_create(&agent.threads.breakdown, NULL, breakdown_thread_run, NULL);
             agent.threads.breakdown_active = 1;
             printf("[THREAD] Breakdown thread started\n");
-        }
+        }*/
         break;
     
     default:
@@ -206,10 +188,10 @@ static void stop_threads(void) {
                 printf("[THREAD] Orchestrator thread stopped\n");
             }
             if (agent.threads.parser_active) {
-                parser_stop();
+                execution_master_stop();
                 pthread_join(agent.threads.parser, NULL);
                 agent.threads.parser_active = 0;
-                printf("[THREAD] Parser thread stopped\n");
+                printf("[THREAD] Execution Master thread stopped\n");
             }
             if (agent.threads.breakdown_active) {
                 breakdown_stop();

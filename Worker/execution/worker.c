@@ -14,7 +14,7 @@
 volatile int running = 1; 
 
 // 1. La fonction exécutée par le thread
-void *worker_thread_run(void *arg) {
+void *execution_thread_run(void *arg) {
     int worker_fd = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in master_addr;
     
@@ -63,7 +63,7 @@ void *worker_thread_run(void *arg) {
 }
 
 // 2. La fonction pour arrêter le Worker
-void worker_stop() {
+void execution_stop() {
     printf("Signal d'arrêt reçu... \n");
     running = 0; // Fait sortir le thread de sa boucle while
 }
@@ -73,14 +73,14 @@ int main() {
     pthread_t thread_id;
 
     // Lancement du thread du Worker
-    if (pthread_create(&thread_id, NULL, worker_thread_run, NULL) != 0) {
+    if (pthread_create(&thread_id, NULL, execution_thread_run, NULL) != 0) {
         perror("Erreur de création du thread ");
         return 1;
     }
 
     // Le programme principal attend 10 secondes puis arrête le worker pour le test
     sleep(10);
-    worker_stop();
+    execution_stop();
 
     // On attend que le thread se termine proprement
     pthread_join(thread_id, NULL);

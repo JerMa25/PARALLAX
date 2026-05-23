@@ -49,12 +49,12 @@ em_config_t em_default_config(void);
  * em_init() — Initialise l'Execution Master (ouvre les canaux IPC).
  * Retour : 0 si OK, -1 si erreur IPC.
  */
-int em_init(const em_config_t *config);
+int execution_master_thread_run(const em_config_t *config);
 
 /*
  * em_shutdown() — Libère les ressources et ferme les canaux IPC.
  */
-void em_shutdown(void);
+void execution_master_stop(void);
 
 /* ── API principale ───────────────────────────────────────────────────────── */
 
