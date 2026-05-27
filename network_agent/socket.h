@@ -3,8 +3,10 @@
 #include<stdint.h>
 
 typedef struct {
+    
     uint64_t type;
     uint64_t size;
+    uint64_t rec_type;
     char data[];
 } message_t;
 
