@@ -252,4 +252,26 @@ const worker_table_t *orchestrator_get_worker_table(const orchestrator_t *orch);
 const job_table_t    *orchestrator_get_job_table(const orchestrator_t *orch);
 const scheduler_t    *orchestrator_get_scheduler(const orchestrator_t *orch);
 
+/* ====================================================================
+ * Intégration thread (contrat avec Agent_Init / Tchami)
+ * ====================================================================
+ *
+ * Ces deux fonctions exposent l'orchestrator sous la forme attendue
+ * par init.c (Tchami). Elles encapsulent :
+ *   - création d'une instance orchestrator_t globale
+ *   - boucle de réception des messages IPC en provenance de l'Execution
+ *     Master (em_submit_msg_t sur EM_IPC_KEY_SUBMIT)
+ *   - conversion des soumissions EM en événements orchestrator
+ *   - drain des actions et conversion ACT_NOTIFY_JOB_DONE → em_result_msg_t
+ *     envoyé sur EM_IPC_KEY_RESULT
+ *
+ * Signature pthread standard : void *(*)(void *)
+ *   utilisable directement par pthread_create(..., orchestrator_thread_run, NULL).
+ *
+ * orchestrator_stop() positionne un flag volatile à 0 ; le thread sort
+ * de sa boucle dès que msgrcv() débloque (ou après le tick courant).
+ */
+void *orchestrator_thread_run(void *arg);
+void  orchestrator_stop(void);
+
 #endif /* PARALLAX_ORCHESTRATOR_H */
