@@ -2,3 +2,6 @@
 /test
 /Testing2
 /network_agent
+.vscode
+.vscode/
+.DS_Store
