@@ -33,14 +33,14 @@ char * create_mq(char *msg_type, int msg_len)
         registry->base_path = "/tmp";
         registry->head = NULL;
     }
-    char random_msg_type[64];
+    char * random_msg_type=(char *)malloc(8);
     if(msg_type==NULL){
         const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        for (int i = 0; i < 63; i++) {
+        for (int i = 0; i < 7; i++) {
             int key = rand() % (int)(sizeof(charset) - 1);
             random_msg_type[i] = charset[key];
         }
-        random_msg_type[63] = '\0';
+        random_msg_type[7] = '\0';
         msg_type = random_msg_type;
     }
     int id = registry->counter++;

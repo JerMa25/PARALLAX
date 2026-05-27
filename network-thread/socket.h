@@ -3,6 +3,7 @@
 #include<stdint.h>
 
 typedef struct {
+    long mq_type;
     uint64_t type;
     uint64_t recv_type;
     uint64_t size;

@@ -2,3 +2,6 @@
 /test
 /Testing2
 /network_agent
+*.o
+*.so
+/Worker_execution_Module
