@@ -15,21 +15,7 @@
 #define NETWORK_AGENT_MTYPE 1L
 #define NETWORK_AGENT_MAX_DATA 65536
 
-typedef struct {
-    long mtype;
-    uint64_t type;
-    uint64_t size;
-    char data[NETWORK_AGENT_MAX_DATA];
-} queued_message;
 
-typedef struct {
-    long mtype;
-    char ip[16];
-    int port;
-    uint64_t type;
-    uint64_t size;
-    char data[NETWORK_AGENT_MAX_DATA];
-} outgoing_message;
 
 static pthread_t listener_thread;
 static pthread_t sender_thread;
@@ -238,7 +224,7 @@ void * socket_sender(void * args){
  * La fonction cree le listener, initialise la queue outgoing, puis lance
  * les threads d'ecoute et d'envoi sans bloquer l'appelant.
  */
-void start(){
+void network_start(){
     if (atomic_exchange(&agent_started, 1))
         return;
 
@@ -289,7 +275,7 @@ void start(){
  * La fonction signale l'arret aux threads, debloque le listener, attend les
  * threads avec pthread_join, puis libere les ressources.
  */
-void stop(){
+void network_stop(){
     if (!atomic_load(&agent_started))
         return;
 
