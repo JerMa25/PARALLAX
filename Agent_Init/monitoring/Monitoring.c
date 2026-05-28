@@ -92,14 +92,15 @@ void *monitoring_thread_run(void *arg){
     (void)arg; // avoids warning "Unused parameter"
 
     while(monitoring_running){
-        MachineMetrics m;
-        memset(&m, 0, sizeof(MachineMetrics)); // Initialize all fields to zero
-
+        static MachineMetrics static_m;
         // Read static metrics only on first iteration
         if (first_run) {
-            monitoring_read_static(&m);
+            memset(&static_m, 0, sizeof(MachineMetrics));
+            monitoring_read_static(&static_m);
             first_run = 0;
         }
+
+        MachineMetrics m = static_m;
 
         // Read all metrics
         read_cpu_usage(&m);

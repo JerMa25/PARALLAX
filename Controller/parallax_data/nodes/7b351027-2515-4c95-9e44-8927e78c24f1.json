@@ -1,0 +1,17 @@
+{
+  "uuid": "7b351027-2515-4c95-9e44-8927e78c24f1",
+  "ip": "192.168.50.66",
+  "port": 9000,
+  "status": 0,
+  "last_heartbeat": 1779994118,
+  "hardware": {
+    "cpu_cores": 0,
+    "cpu_threads_per_core": 0,
+    "cpu_freq_mhz": 0.0,
+    "cpu_model": "",
+    "ram_total_mb": 0,
+    "disk_total_gb": 0,
+    "disk_mount": "",
+    "network_iface": ""
+  }
+}

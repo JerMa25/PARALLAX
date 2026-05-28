@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <stdatomic.h>
 
-#define PERSIST_DIR          "/var/lib/parallax"
+#define PERSIST_DIR          "./Controller/parallax_data"
 #define METRICS_FLUSH_SEC    30     // flush du cache métriques toutes les 30s
 #define METRICS_BUFFER_MAX   256    // entrées max dans le buffer avant flush forcé
 

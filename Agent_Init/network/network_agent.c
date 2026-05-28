@@ -184,10 +184,10 @@ void *socket_listener(void *args) {
 
     char msg_type[64];
 
-    printf("received message with type %lu\n", (unsigned long)item.type);
-    snprintf(msg_type, sizeof(msg_type), "%lu", (unsigned long)item.type);
+    printf("received message with type %s\n", item.type);
+   
 
-    map_entry *entry = get_or_create_mq(msg_type);
+    map_entry *entry = get_or_create_mq(item.type);
     if (entry == NULL) {
       fprintf(stderr, "network_agent: unable to create mq for type %s\n",
               msg_type);

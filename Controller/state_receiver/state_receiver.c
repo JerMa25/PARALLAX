@@ -15,6 +15,11 @@
 #include "network_agent.h"
 
 
+
+#include <stdio.h>
+#include <time.h>
+#include "state_message.h"
+
 // ══════════════════════════════════════════════════════════════════════════
 //  HANDLERS DE MESSAGES
 // ════════════════════════════════════════════════════════════════════════════
@@ -23,6 +28,7 @@
  * Enregistre un nouveau nœud dans la table globale lors de la réception d'un MSG_HELLO.
  */
 static void register_node(MachineMetrics* msg) {
+    if (!msg || strlen(msg->uuid) == 0) return;
     pthread_mutex_lock(&g_node_table.lock);
 
     if (node_table_find(&g_node_table, msg->uuid)) {
@@ -47,19 +53,95 @@ static void register_node(MachineMetrics* msg) {
     }
 }
 
+
+
+
+
+void print_machine_metrics(const MachineMetrics *m)
+{
+    if (m == NULL) {
+        printf("MachineMetrics is NULL\n");
+        return;
+    }
+
+    printf("========================================\n");
+    printf("         MACHINE METRICS REPORT         \n");
+    printf("========================================\n");
+
+    printf("UUID                : %s\n", m->uuid);
+    printf("IP Address          : %s\n", m->ip);
+    printf("Port                : %d\n", m->port);
+    printf("Message Type        : %d\n", m->type);
+
+    printf("\n========== CPU ==========\n");
+    printf("CPU Usage           : %.2f %%\n", m->cpu_usage);
+    printf("Load Average        : %.2f %.2f %.2f\n",
+           m->load_avg[0],
+           m->load_avg[1],
+           m->load_avg[2]);
+
+    printf("CPU Cores           : %d\n", m->cpu_cores);
+    printf("Threads/Core        : %d\n", m->cpu_threads_per_core);
+    printf("CPU Frequency       : %.2f MHz\n", m->cpu_freq_mhz);
+    printf("CPU Model           : %s\n", m->cpu_model);
+
+    printf("\n========== MEMORY ==========\n");
+    printf("Memory Usage        : %.2f %%\n", m->mem_usage);
+    printf("Memory Available    : %.2f MB\n", m->mem_available_mb);
+    printf("Memory Used         : %ld MB\n", m->mem_used_mb);
+    printf("Memory Total        : %ld MB\n", m->mem_total_mb);
+
+    printf("\n========== DISK ==========\n");
+    printf("Disk Usage          : %.2f %%\n", m->disk_usage);
+    printf("Disk Used           : %ld MB\n", m->disk_used_mb);
+    printf("Disk Total          : %ld MB\n", m->disk_total_mb);
+    printf("Disk Mount          : %s\n", m->disk_mount);
+
+    printf("\n========== NETWORK ==========\n");
+    printf("Bandwidth           : %.2f Mbps\n",
+           m->network_bandwidth_mbps);
+
+    printf("Active Connections  : %d\n", m->active_connections);
+    printf("Network Interface   : %s\n", m->network_iface);
+
+    printf("\n========== SYSTEM ==========\n");
+    printf("Active Processes    : %d\n", m->active_processes);
+    printf("Context Switch Rate : %.2f\n", m->context_switch_rate);
+    printf("Uptime              : %ld seconds\n", m->uptime_seconds);
+
+    printf("\n========== COMPUTED ==========\n");
+    printf("Queue Length        : %d\n", m->queue_len);
+    printf("Score               : %.2f\n", m->score);
+    printf("Overloaded          : %s\n",
+           m->is_overloaded ? "YES" : "NO");
+
+    printf("\n========== TIMESTAMP ==========\n");
+    printf("Timestamp           : %s", ctime(&m->timestamp));
+
+    printf("========================================\n");
+}
+
+
+
 /**
  * Met à jour les métriques d'un nœud lors de la réception d'un MSG_HEARTBEAT.
  */
 static void update_heartbeat(MachineMetrics* msg) {
+    if (!msg || strlen(msg->uuid) == 0) return;
     pthread_mutex_lock(&g_node_table.lock);
 
+    printf("\n\n\nFrom update Heartbeat");
+    print_machine_metrics(msg);
     NodeInfo* node = node_table_find(&g_node_table, msg->uuid);
     if (!node) {
-        printf("[StateReceiver] ⚠ Heartbeat nœud inconnu %s\n", msg->uuid);
-        pthread_mutex_unlock(&g_node_table.lock);
-        return;
+        printf("[StateReceiver] ⚠ Nœud inconnu %s, auto-enregistrement...\n", msg->uuid);
+        node = node_table_add(&g_node_table, msg->uuid, msg->ip, msg->port);
+        if (!node) {
+            pthread_mutex_unlock(&g_node_table.lock);
+            return;
+        }
     }
-
+    
     // Mise à jour de l'état du noeud
     node->last_heartbeat       = time(NULL);
     node->metrics.cpu_usage    = msg->cpu_usage;
@@ -93,13 +175,22 @@ static void update_heartbeat(MachineMetrics* msg) {
  * Initialise le hardware d'un nœud lors de la réception d'un MSG_HEARTBEAT_INIT.
  */
 static void init_heartbeat(MachineMetrics* msg) {
+    if (!msg || strlen(msg->uuid) == 0) return;
     pthread_mutex_lock(&g_node_table.lock);
 
+
+     printf("\n\n\nFrom update Heartbeat");
+    print_machine_metrics(msg);
+
+    
     NodeInfo* node = node_table_find(&g_node_table, msg->uuid);
     if (!node) {
-        printf("[StateReceiver] ⚠ HEARTBEAT_INIT nœud inconnu %s\n", msg->uuid);
-        pthread_mutex_unlock(&g_node_table.lock);
-        return;
+        printf("[StateReceiver] ⚠ Nœud inconnu %s, auto-enregistrement...\n", msg->uuid);
+        node = node_table_add(&g_node_table, msg->uuid, msg->ip, msg->port);
+        if (!node) {
+            pthread_mutex_unlock(&g_node_table.lock);
+            return;
+        }
     }
 
     // Mise à jour des informations matérielles si pas encore initialisées
@@ -167,6 +258,8 @@ void * heartbeat_init_func(void * arg){
         init_heartbeat(msg);
         printf("received a hearbeat\n");
         }
+
+
 }
 
 void * heartbeat_func(void * arg){
