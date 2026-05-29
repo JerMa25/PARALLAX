@@ -11,7 +11,7 @@ int main() {
     /*
      * get mock nodes
      */
-    NodeInfo *nodes = get_node_details(&node_count);
+    MachineMetrics *nodes = get_mock_machine_metrics();
 
     if (!nodes) {
         printf("failed to get nodes\n");
@@ -73,10 +73,10 @@ int main() {
                nodes[i].ip);
 
         printf("cpu usage     : %.2f\n",
-               nodes[i].metrics.cpu_usage);
+               nodes[i].cpu_usage);
 
         printf("ram usage     : %.2f\n",
-               nodes[i].metrics.ram_usage);
+               nodes[i].mem_usage);
 
         printf("function      : %s\n",
                assignments[i].task->function_name);

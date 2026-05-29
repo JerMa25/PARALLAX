@@ -16,11 +16,12 @@ void execute_fxn(void * data ,size_t total_size , char * fxn_name,int node_count
     memset(message, 0, sizeof(message_t) + 64);
     message->mq_type = 1;
     strcpy(message->type, "NODES");
+    strcpy(message->recv_type, "NODES"); // Tell the controller what type to label the response
     // Tell controller to reply to our network agent on port 9005
     snprintf(message->data, 64, "127.0.0.1:9005");
     message->size = strlen(message->data) + 1;
     
-    send_msg(controller_ip, 9000, "NODES", message);
+    send_msg(controller_ip, 9000, "master_out", message);
     free(message);
 
     //read nodes data that was sent to the NODES mq
@@ -61,27 +62,12 @@ void execute_fxn(void * data ,size_t total_size , char * fxn_name,int node_count
     // Use the actual number of nodes instead of the hardcoded request
     node_count = (actual_node_count < node_count) ? actual_node_count : node_count;
 
-    NodeInfo *nodes = malloc(sizeof(NodeInfo) * node_count);
-    if (nodes) {
-        for (int i = 0; i < node_count; i++) {
-            memset(&nodes[i], 0, sizeof(NodeInfo));
-            strncpy(nodes[i].uuid, metrics[i].uuid, sizeof(nodes[i].uuid) - 1);
-            strncpy(nodes[i].ip, metrics[i].ip, sizeof(nodes[i].ip) - 1);
-            nodes[i].port = metrics[i].port;
-            nodes[i].metrics.cpu_usage = metrics[i].cpu_usage;
-            nodes[i].metrics.ram_usage = metrics[i].mem_usage;
-            // Provide some hardware defaults to prevent divide by zero in orchestrator
-            nodes[i].hardware.cpu_cores = metrics[i].cpu_cores ? metrics[i].cpu_cores : 1;
-            nodes[i].status = NODE_ACTIF;
-        }
-    }
-
     //create task assignments
     task_assignment * assignments = create_assignments(
                                         data,
                                         total_size,
                                         fxn_name,
-                                        nodes,
+                                        metrics,
                                         node_count
                                     );
 
@@ -94,10 +80,10 @@ void execute_fxn(void * data ,size_t total_size , char * fxn_name,int node_count
         printf("\n=================================\n");
         printf("NODE %d\n", i);
         printf("=================================\n");
-        printf("uuid          : %s\n", nodes[i].uuid);
-        printf("ip            : %s\n", nodes[i].ip);
-        printf("cpu usage     : %.2f\n", nodes[i].metrics.cpu_usage);
-        printf("ram usage     : %.2f\n", nodes[i].metrics.ram_usage);
+        printf("uuid          : %s\n", metrics[i].uuid);
+        printf("ip            : %s\n", metrics[i].ip);
+        printf("cpu usage     : %.2f\n", metrics[i].cpu_usage);
+        printf("ram usage     : %.2f\n", metrics[i].mem_usage);
         printf("function      : %s\n", assignments[i].task->function_name);
         printf("nb chunk bytes: %d\n", chunk->chunk_size);
         printf("chunk ints    : %zu\n", int_count);
@@ -119,7 +105,6 @@ void execute_fxn(void * data ,size_t total_size , char * fxn_name,int node_count
     
 
     team_destroy(t);
-    free(nodes);
 
 
     
