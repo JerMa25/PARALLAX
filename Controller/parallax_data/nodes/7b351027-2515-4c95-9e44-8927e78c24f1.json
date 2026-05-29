@@ -3,11 +3,11 @@
   "ip": "192.168.50.66",
   "port": 9000,
   "status": 0,
-  "last_heartbeat": 1779995339,
+  "last_heartbeat": 1780037003,
   "hardware": {
     "cpu_cores": 10,
     "cpu_threads_per_core": 12,
-    "cpu_freq_mhz": 1142.6,
+    "cpu_freq_mhz": 1254.3,
     "cpu_model": "12th Gen Intel(R) Core(TM) i7-1255U",
     "ram_total_mb": 15686,
     "disk_total_gb": 452457,

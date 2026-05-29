@@ -1,7 +1,0 @@
-/home/fureh_mitoto/Desktop/Parallax/GOAT-Plugs/test/buil/CMakeFiles/intrinsics_gen.dir
-/home/fureh_mitoto/Desktop/Parallax/GOAT-Plugs/test/buil/CMakeFiles/omp_gen.dir
-/home/fureh_mitoto/Desktop/Parallax/GOAT-Plugs/test/buil/CMakeFiles/acc_gen.dir
-/home/fureh_mitoto/Desktop/Parallax/GOAT-Plugs/test/buil/CMakeFiles/clang-tablegen-targets.dir
-/home/fureh_mitoto/Desktop/Parallax/GOAT-Plugs/test/buil/CMakeFiles/mytool.dir
-/home/fureh_mitoto/Desktop/Parallax/GOAT-Plugs/test/buil/CMakeFiles/edit_cache.dir
-/home/fureh_mitoto/Desktop/Parallax/GOAT-Plugs/test/buil/CMakeFiles/rebuild_cache.dir

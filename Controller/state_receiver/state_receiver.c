@@ -55,6 +55,116 @@ static void register_node(MachineMetrics* msg) {
 
 
 
+MachineMetrics * get_all_node_metrics(){
+    pthread_mutex_lock(&g_node_table.lock);
+    int count = g_node_table.count;
+    if (count == 0) {
+        pthread_mutex_unlock(&g_node_table.lock);
+        return NULL;
+    }
+    
+    // Allocate count + 1 for sentinel
+    MachineMetrics *metrics = malloc((count + 1) * sizeof(MachineMetrics));
+    if (!metrics) {
+        pthread_mutex_unlock(&g_node_table.lock);
+        return NULL;
+    }
+    memset(metrics, 0, (count + 1) * sizeof(MachineMetrics)); // ensures sentinel's uuid is empty
+
+    NodeInfo *curr = g_node_table.head;
+    int i = 0;
+    while (curr != NULL && i < count) {
+        strncpy(metrics[i].uuid, curr->uuid, sizeof(metrics[i].uuid) - 1);
+        strncpy(metrics[i].ip, curr->ip, sizeof(metrics[i].ip) - 1);
+        metrics[i].port = curr->port;
+        
+        metrics[i].cpu_usage = curr->metrics.cpu_usage;
+        metrics[i].mem_usage = curr->metrics.ram_usage;
+        metrics[i].mem_used_mb = curr->metrics.ram_used_mb;
+        metrics[i].disk_usage = curr->metrics.disk_usage;
+        metrics[i].disk_used_mb = curr->metrics.disk_used_mb;
+        metrics[i].queue_len = curr->metrics.queue_len;
+        metrics[i].score = curr->metrics.score;
+        metrics[i].load_avg[0] = curr->metrics.load_avg[0];
+        metrics[i].load_avg[1] = curr->metrics.load_avg[1];
+        metrics[i].load_avg[2] = curr->metrics.load_avg[2];
+        
+        metrics[i].cpu_cores = curr->hardware.cpu_cores;
+        metrics[i].cpu_threads_per_core = curr->hardware.cpu_threads_per_core;
+        metrics[i].cpu_freq_mhz = curr->hardware.cpu_freq_mhz;
+        strncpy(metrics[i].cpu_model, curr->hardware.cpu_model, sizeof(metrics[i].cpu_model) - 1);
+        metrics[i].mem_total_mb = curr->hardware.ram_total_mb;
+        metrics[i].disk_total_mb = curr->hardware.disk_total_gb;
+        strncpy(metrics[i].disk_mount, curr->hardware.disk_mount, sizeof(metrics[i].disk_mount) - 1);
+        strncpy(metrics[i].network_iface, curr->hardware.network_iface, sizeof(metrics[i].network_iface) - 1);
+        
+        metrics[i].timestamp = curr->last_heartbeat;
+        
+        curr = curr->next;
+        i++;
+    }
+    
+    pthread_mutex_unlock(&g_node_table.lock);
+    return metrics;
+}
+
+
+void * get_machine_xtics(void * arg){
+    
+    (void)arg;
+    char * get_nodes_type = create_mq("NODES", sizeof(queued_message));
+    map_entry * node_query_mq = find_by_msg_type(get_nodes_type);
+    if (!node_query_mq) return NULL;
+
+    queued_message qmsg;
+    while(1){
+        ssize_t ret = msgrcv(node_query_mq->queue_id, &qmsg, sizeof(qmsg) - sizeof(long),
+                             1L, IPC_NOWAIT); // NETWORK_AGENT_MTYPE is 1L
+       
+        if (ret == -1) {
+            usleep(100000);
+            continue;
+        }
+
+       message_t * message = (message_t *)qmsg.data;
+       
+       MachineMetrics * metrics = get_all_node_metrics();
+       int count = 0;
+       if (metrics) {
+           while (strlen(metrics[count].uuid) > 0) {
+               count++;
+           }
+       }
+       
+       size_t payload_size = count * sizeof(MachineMetrics);
+       size_t total_size = sizeof(message_t) + payload_size;
+       
+       message_t * resp = malloc(total_size);
+       if (!resp) {
+           free(metrics);
+           continue;
+       }
+       memset(resp, 0, total_size);
+       strncpy(resp->recv_type, message->recv_type, sizeof(resp->recv_type) - 1);
+       resp->size = payload_size;
+       if (payload_size > 0) {
+           memcpy(resp->data, metrics, payload_size);
+       }
+       free(metrics);
+
+       map_entry * reply_mq = find_by_msg_type(message->recv_type);
+       if (reply_mq) {
+           queued_message reply_qmsg;
+           memset(&reply_qmsg, 0, sizeof(reply_qmsg));
+           reply_qmsg.mtype = 1L;
+           memcpy(reply_qmsg.data, resp, total_size);
+           msgsnd(reply_mq->queue_id, &reply_qmsg, sizeof(reply_qmsg) - sizeof(long), 0);
+       }
+       free(resp);
+    }
+    return NULL;
+}
+
 
 
 void print_machine_metrics(const MachineMetrics *m)
@@ -282,23 +392,49 @@ void * heartbeat_func(void * arg){
         }
 }
 
+
+
+
+//******* To do 
+//  ADD the fxn for gettting the ip from a local interface
+//  */
+
 void * hello_func(void * arg){
-        printf("Entered here 3\n");
-     map_entry * heartbeat_entry=(map_entry * )arg;
-        queued_message qmsg;
-        while(1){
-            ssize_t ret = msgrcv(heartbeat_entry->queue_id, &qmsg, sizeof(qmsg) - sizeof(long),
-                             1L, IPC_NOWAIT); // NETWORK_AGENT_MTYPE is 1L
+
+    printf("Entered here 3\n");
+    map_entry * heartbeat_entry=(map_entry * )arg;
+    queued_message qmsg;
+    
+    while(1){
+        ssize_t ret = msgrcv(heartbeat_entry->queue_id, &qmsg, sizeof(qmsg) - sizeof(long),
+                         1L, IPC_NOWAIT); // NETWORK_AGENT_MTYPE is 1L
         if (ret == -1) {
             usleep(100000);   // 100ms — pas de message, on repoll
             continue;
         }
 
+        // Ignore if this is a reply (starts with IP:) so we don't infinitely reply to a reply
+        if (strncmp(qmsg.data, "IP:", 3) == 0) continue;
+
         // Le payload du network_agent est dans qmsg.data
         MachineMetrics *msg = (MachineMetrics *)qmsg.data;
         register_node(msg);
-        printf("received a hearbeat\n");
-        }
+        printf("received a HELLO message\n");
+        
+        // Reply with our IP on the same type
+        char my_ip[16] = "127.0.0.1"; // Default for now
+        
+        message_t *reply = malloc(sizeof(message_t) + 64);
+        strcpy(reply->type, HELLO_TYPE);
+        strcpy(reply->recv_type, "");
+        sprintf(reply->data, "IP:%s", my_ip);
+        reply->size = strlen(reply->data) + 1;
+        
+        printf("Replying to HELLO with our IP: %s\n", my_ip);
+        send_broadcast(9001, reply);
+        free(reply);
+    }
+    return NULL;
 }
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -368,9 +504,11 @@ void* state_receiver_thread_run(void* arg) {
     pthread_t hearbeat_init_thread;
     pthread_t heartbeat_thread;
     pthread_t hello_thread;
+    pthread_t get_xtics_thread;
     pthread_create(&hearbeat_init_thread,NULL,heartbeat_init_func,(void * )hearbeat_init);
     pthread_create(&heartbeat_thread,NULL,heartbeat_func,(void * )heartbeat);
     pthread_create(&hello_thread,NULL,hello_func,(void * )hello);
+    pthread_create(&get_xtics_thread,NULL,get_machine_xtics,NULL);
 
 
     

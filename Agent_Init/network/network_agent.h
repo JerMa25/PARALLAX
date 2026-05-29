@@ -31,5 +31,6 @@ typedef struct {
 void *network_thread_run(void *args);
 void network_stop();
 void send_msg(char *Ip, int port, char *queue_name, message_t *message);
+void send_broadcast(int port, message_t *message);
 
 #endif
