@@ -3,7 +3,7 @@
   "ip": "0.0.0.0",
   "port": 9000,
   "status": 0,
-  "last_heartbeat": 1780052539,
+  "last_heartbeat": 1780055828,
   "hardware": {
     "cpu_cores": 0,
     "cpu_threads_per_core": 0,

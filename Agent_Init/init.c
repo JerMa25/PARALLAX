@@ -16,6 +16,9 @@
 #include <sys/msg.h>
 #include "ms_queue.h"
 
+// Global controller IP exposed to other files (e.g. Monitoring.c)
+char controller_ip[16] = "127.0.0.1";
+
 // ===== PRIVATE STATE =====
 static AgentState agent;
 static volatile int agent_running = 1;
@@ -242,6 +245,8 @@ static void send_hello(void) {
                     printf("\n--- Controller IP Received ---\n");
                     printf("Message Type: %s\n", item.type);
                     printf("Controller IP: %s\n", item.data + 3);
+                    strncpy(controller_ip, item.data + 3, 15);
+                    controller_ip[15] = '\0';
                     response_received = 1;
                     break;
                 }

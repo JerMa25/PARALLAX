@@ -17,6 +17,8 @@
 #include "../network/network_agent.h"
 #include "../init.h"
 
+extern char controller_ip[16];
+
 // ══════════════════════════════════════════════════════════════════════════
 //  FONCTION DEBUG - AFFICHAGE DES DONNÉES ENVOYÉES
 // ════════════════════════════════════════════════════════════════════════════
@@ -141,7 +143,7 @@ void *monitoring_thread_run(void *arg){
                 pkt->size = sizeof(MachineMetrics);
                 memcpy(pkt->data, &m, sizeof(MachineMetrics));
 
-                send_msg("192.168.50.1", 9000, NULL, pkt);
+                send_msg(controller_ip, 9000, NULL, pkt);
                 
                 free(pkt);
                 heartbeat_sent = 1;
@@ -162,7 +164,7 @@ void *monitoring_thread_run(void *arg){
                 strcpy(pkt->type,HB_TYPE);
                 pkt->size = sizeof(MachineMetrics);
                 memcpy(pkt->data, &m, sizeof(MachineMetrics));
-                send_msg("192.168.50.1", 9000, NULL, pkt);
+                send_msg(controller_ip, 9000, NULL, pkt);
                 free(pkt);
                 msg_count++;
                 printf("[MONITORING] MSG_HEARTBEAT sent (msg #%d)\n", msg_count);
