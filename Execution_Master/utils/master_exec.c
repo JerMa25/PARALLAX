@@ -102,6 +102,8 @@ void execute_fxn(void * data ,size_t total_size , char * fxn_name,int node_count
     //first join results
 
     //logic to aggregate results
+
+    
     
 
     team_destroy(t);

@@ -46,6 +46,10 @@ void *thread_func_test(void *arg){
     printf("Thread with tid %d resumed and died\n",
            param->tid);
 
+
+
+    //sending data to worker nodes
+
     barrier_wait(param->barrier);
 
     return NULL;

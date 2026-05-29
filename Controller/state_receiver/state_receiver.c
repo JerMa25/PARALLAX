@@ -254,6 +254,11 @@ static void update_heartbeat(MachineMetrics* msg) {
         }
     }
     
+    // Update node identity (IP/Port might have changed or recovered from stale snapshot)
+    strncpy(node->ip, msg->ip, sizeof(node->ip) - 1);
+    node->ip[sizeof(node->ip) - 1] = '\0';
+    node->port = msg->port;
+
     // Mise à jour de l'état du noeud
     node->last_heartbeat       = time(NULL);
     node->metrics.cpu_usage    = msg->cpu_usage;
@@ -304,6 +309,11 @@ static void init_heartbeat(MachineMetrics* msg) {
             return;
         }
     }
+
+    // Update node identity
+    strncpy(node->ip, msg->ip, sizeof(node->ip) - 1);
+    node->ip[sizeof(node->ip) - 1] = '\0';
+    node->port = msg->port;
 
     // Mise à jour des informations matérielles si pas encore initialisées
     if (!node->hardware.initialized) {
