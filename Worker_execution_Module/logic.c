@@ -1,7 +1,7 @@
 #include"logic.h"
 #include<stdio.h>
 #include<unistd.h>
-
+#include<string.h>
 
 __asm__(
     ".global worker_entry\n"
@@ -27,11 +27,25 @@ void worker_main(int argc, char **argv) {
         printf("Data to process: %s\n", data_val);
     }
 
+    void *ret = NULL;
     fn fxn = matcher(fxn_name);
     if (fxn) {
-        fxn(NULL);
+        ret = fxn(argc > 2 ? argv[2] : NULL);
     } else {
         printf("Function %s not found\n", fxn_name);
+    }
+
+    if (argc > 3) {
+        int fd = 0;
+        sscanf(argv[3], "%d", &fd);
+        if (fd > 0) {
+            if (ret) {
+                write(fd, ret, strlen((char*)ret) + 1);
+            } else {
+                write(fd, "NULL", 5);
+            }
+            close(fd);
+        }
     }
 
     _exit(0);

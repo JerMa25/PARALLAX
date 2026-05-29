@@ -78,7 +78,7 @@ static void send_hello(void) {
         strcpy(pkt->type,HELLO_TYPE);
         pkt->size = sizeof(MachineMetrics);
         memcpy(pkt->data, &msg, sizeof(MachineMetrics));
-        send_msg("192.168.50.1", 9000, pkt);
+        send_msg("192.168.50.1", 9000, NULL, pkt);
         free(pkt);
         printf("[INIT] HELLO sent: uuid=%s\n", agent.uuid);
     }
@@ -112,7 +112,8 @@ static void start_threads(void){
     }
 
     if (!agent.threads.network_active) {
-        pthread_create(&agent.threads.network, NULL, network_thread_run, NULL);
+        static network_agent_config agent_net_cfg = {9000, "outgoing"};
+        pthread_create(&agent.threads.network, NULL, network_thread_run, &agent_net_cfg);
         agent.threads.network_active = 1;
         printf("[THREAD] Network thread started\n");
     }
