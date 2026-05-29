@@ -394,10 +394,6 @@ void * heartbeat_func(void * arg){
 }
 
 
-
-
-
-
 void * hello_func(void * arg){
 
     printf("Entered here 3\n");
@@ -420,17 +416,12 @@ void * hello_func(void * arg){
         register_node(msg);
         printf("received a HELLO message\n");
         
-<<<<<<< HEAD
-        // Reply with our IP on the same type
-        char my_ip[16] = "192.168.201.217";
-=======
         // Reply with our IP dynamically
         char iface[64] = {0};
         char my_ip[16] = {0};
         
         load_network_interface(iface, sizeof(iface));
         get_local_ip(my_ip, sizeof(my_ip), iface);
->>>>>>> cd7770e175a58d7eb134606f32b98257762d94e5
         
         message_t *reply = malloc(sizeof(message_t) + 64);
         strcpy(reply->type, HELLO_TYPE);
@@ -440,11 +431,7 @@ void * hello_func(void * arg){
         
         printf("Replying to HELLO with our IP: %s directly to agent at %s:%d\n", my_ip, msg->ip, msg->port);
         // Reply directly via reliable TCP unicast to the agent instead of a broadcast
-<<<<<<< HEAD
-        send_broadcast( 9001, reply);
-=======
         send_broadcast_message(9001, reply);
->>>>>>> cd7770e175a58d7eb134606f32b98257762d94e5
         free(reply);
     }
     return NULL;
