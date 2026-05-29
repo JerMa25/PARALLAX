@@ -10,6 +10,11 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/stat.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/msg.h>
+#include "ms_queue.h"
 
 // ===== PRIVATE STATE =====
 static AgentState agent;
@@ -201,13 +206,46 @@ static void send_hello(void) {
     
     message_t *pkt = (message_t *)malloc(sizeof(message_t) + sizeof(MachineMetrics));
     if (pkt) {
+
+        
        
         strcpy(pkt->type,HELLO_TYPE);
         pkt->size = sizeof(MachineMetrics);
         memcpy(pkt->data, &msg, sizeof(MachineMetrics));
-        send_msg("192.168.50.1", 9000, pkt);
+
+
+        //send broadcast message in network
+        send_broadcast(9001, pkt);//port +1
+
         free(pkt);
         printf("[INIT] HELLO sent: uuid=%s\n", agent.uuid);
+    }
+
+    printf("Waiting for controller's IP reply on port 9001 via message queue...\n");
+    map_entry *mq = find_by_msg_type(HELLO_TYPE);
+    if (!mq) {
+        if (create_mq(HELLO_TYPE, NETWORK_AGENT_MAX_DATA) != NULL) {
+            mq = find_by_msg_type(HELLO_TYPE);
+        }
+    }
+    
+    if (!mq) {
+        printf("[INIT] Failed to find or create HELLO_TYPE queue!\n");
+        return;
+    }
+
+    queued_message item;
+    while(1) {
+        ssize_t received = msgrcv(mq->queue_id, &item, sizeof(item) - sizeof(long), NETWORK_AGENT_MTYPE, 0);
+        if (received > 0) {
+            // Ignore our own HELLO broadcast
+            if (strncmp(item.data, "IP:", 3) != 0) continue;
+            
+            printf("\n--- Controller IP Received ---\n");
+            printf("Message Type: %s\n", item.type);
+            printf("Controller IP: %s\n", item.data + 3);
+            break;
+        }
     }
 }
 
@@ -239,7 +277,8 @@ static void start_threads(void){
     }
 
     if (!agent.threads.network_active) {
-        pthread_create(&agent.threads.network, NULL, network_thread_run, NULL);
+        static network_agent_config agent_net_cfg = {9000, "outgoing"};
+        pthread_create(&agent.threads.network, NULL, network_thread_run, &agent_net_cfg);
         agent.threads.network_active = 1;
         printf("[THREAD] Network thread started\n");
     }

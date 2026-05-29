@@ -44,10 +44,8 @@ char * create_mq(char *msg_type, int msg_len)
         msg_type = random_msg_type;
     }
     int id = registry->counter++;
-    //create key
-    key_t key = ftok(registry->base_path, (int)(id & 0xFF));
-    //create mesage queue
-    int msgid = msgget(key, IPC_CREAT | 0666);
+    //create mesage queue using IPC_PRIVATE to guarantee process isolation
+    int msgid = msgget(IPC_PRIVATE, IPC_CREAT | 0666);
     if (msgid < 0) {
         perror("Error creating queue");
         return NULL;

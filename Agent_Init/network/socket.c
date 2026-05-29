@@ -133,3 +133,42 @@ int send_message(connection *connection, message_t *message)
 
     return 0;
 }
+
+/*
+ * Envoie un message de broadcast UDP sur le port donne.
+ */
+int send_broadcast_message(int port, message_t *message)
+{
+    if (!message) return -1;
+
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sockfd < 0) {
+        perror("socket broadcast");
+        return -1;
+    }
+
+    int broadcastEnable = 1;
+    if (setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcastEnable, sizeof(broadcastEnable)) < 0) {
+        perror("setsockopt SO_BROADCAST");
+        close(sockfd);
+        return -1;
+    }
+
+    struct sockaddr_in broadcastAddr;
+    memset(&broadcastAddr, 0, sizeof(broadcastAddr));
+    broadcastAddr.sin_family = AF_INET;
+    broadcastAddr.sin_port = htons(port);
+    broadcastAddr.sin_addr.s_addr = inet_addr("255.255.255.255");
+
+    size_t total_size = sizeof(message_t) + message->size;
+    ssize_t sent = sendto(sockfd, message, total_size, 0, (struct sockaddr *)&broadcastAddr, sizeof(broadcastAddr));
+
+    if (sent != (ssize_t)total_size) {
+        perror("sendto broadcast");
+        close(sockfd);
+        return -1;
+    }
+
+    close(sockfd);
+    return 0;
+}

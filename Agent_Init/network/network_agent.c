@@ -18,9 +18,11 @@
 
 static pthread_t listener_thread;
 static pthread_t sender_thread;
+static pthread_t udp_listener_thread;
 static connection *local_connection = NULL;
 static atomic_int agent_running = 0;
 static atomic_int agent_started = 0;
+static int agent_port = 9000;
 static pthread_mutex_t registry_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /*
@@ -81,6 +83,83 @@ static void cleanup_agent() {
 
   destroy_queues();
   atomic_store(&agent_started, 0);
+}
+
+/*
+ * Thread d'ecoute UDP (pour le controller).
+ * Il ecoute sur le port donne et place les paquets dans la queue correspondante.
+ */
+void *udp_socket_listener(void *args) {
+    int port = (int)(intptr_t)args;
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sockfd < 0) {
+        perror("udp socket");
+        return NULL;
+    }
+
+    int opt = 1;
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = INADDR_ANY;
+
+    if (bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+        perror("udp bind");
+        close(sockfd);
+        return NULL;
+    }
+
+    printf("UDP listening on port %d\n", port);
+
+    char *buffer = malloc(sizeof(message_t) + NETWORK_AGENT_MAX_DATA);
+    if (!buffer) {
+        close(sockfd);
+        return NULL;
+    }
+
+    while (atomic_load(&agent_running)) {
+        struct sockaddr_in client_addr;
+        socklen_t client_len = sizeof(client_addr);
+
+        ssize_t received = recvfrom(sockfd, buffer, sizeof(message_t) + NETWORK_AGENT_MAX_DATA, 0, (struct sockaddr *)&client_addr, &client_len);
+        if (received < 0) {
+            if (!atomic_load(&agent_running)) break;
+            perror("recvfrom udp");
+            continue;
+        }
+
+        if (received < (ssize_t)sizeof(message_t)) continue;
+
+        message_t *header = (message_t *)buffer;
+
+        if (header->size > NETWORK_AGENT_MAX_DATA) continue;
+
+        queued_message item;
+        memset(&item, 0, sizeof(item));
+        item.mtype = NETWORK_AGENT_MTYPE;
+        strcpy(item.type, header->type);
+        strcpy(item.recv_type, header->recv_type);
+        item.size = header->size;
+
+        if (item.size > 0 && received >= (ssize_t)(sizeof(message_t) + item.size)) {
+            memcpy(item.data, header->data, item.size);
+        }
+
+        map_entry *entry = get_or_create_mq(item.type);
+        if (entry == NULL) continue;
+
+        size_t payload_size = offsetof(queued_message, data) - sizeof(long) + item.size;
+        if (msgsnd(entry->queue_id, &item, payload_size, 0) < 0) {
+            perror("msgsnd udp incoming");
+        }
+    }
+    
+    free(buffer);
+    close(sockfd);
+    return NULL;
 }
 
 /*
@@ -169,7 +248,7 @@ void *socket_listener(void *args) {
     item.mtype = NETWORK_AGENT_MTYPE;
   
     strcpy(item.type,header.type);
-    strcpy(item.type,header.type);
+    strcpy(item.recv_type,header.recv_type);
     item.size = header.size;
 
     if (item.size > 0) {
@@ -252,6 +331,7 @@ void *socket_sender(void *args) {
 
    
     strcpy(message->type,item.type);
+    strcpy(message->recv_type,item.recv_type);
     message->size = item.size;
     if (item.size > 0)
       memcpy(message->data, item.data, item.size);
@@ -272,14 +352,25 @@ void *socket_sender(void *args) {
  * les threads d'ecoute et d'envoi sans bloquer l'appelant.
  */
 void *network_thread_run(void *args) {
-  (void)args;
+  int port = 9000;
+  char outgoing_q[64] = "outgoing";
+  if (args != NULL) {
+      network_agent_config *config = (network_agent_config *)args;
+      port = config->port;
+      if (config->queue_name[0] != '\0') {
+          strcpy(outgoing_q, config->queue_name);
+      }
+  }
+
+  agent_port = port;
+
   if (atomic_exchange(&agent_started, 1))
     return NULL;
 
   atomic_store(&agent_running, 1);
 
   // create listening socket for the local machine
-  local_connection = create_listener("0.0.0.0", 9000, 1);
+  local_connection = create_listener("0.0.0.0", port, 1);
 
   
   if (local_connection == NULL) {
@@ -289,13 +380,13 @@ void *network_thread_run(void *args) {
   }
 
   // create recieving message queue to store outgoing messages
-  if (create_mq("outgoing", NETWORK_AGENT_MAX_DATA) == NULL) {
+  if (create_mq(outgoing_q, NETWORK_AGENT_MAX_DATA) == NULL) {
     atomic_store(&agent_running, 0);
     cleanup_agent();
     return NULL;
   }
 
-  map_entry *outgoing_mq = find_by_msg_type("outgoing");
+  map_entry *outgoing_mq = find_by_msg_type(outgoing_q);
 
   // start thread to listen for incoming messages
   if (pthread_create(&listener_thread, NULL, socket_listener,
@@ -318,6 +409,10 @@ void *network_thread_run(void *args) {
     return NULL;
   }
 
+  if (pthread_create(&udp_listener_thread, NULL, udp_socket_listener, (void *)(intptr_t)(port+1)) != 0) {
+      perror("Failed to create UDP listener thread");
+  }
+
   return NULL;
 }
 
@@ -336,8 +431,8 @@ void network_stop() {
     connection *wake_conn =
         create_connection(local_connection->ip, local_connection->port);
     if (wake_conn != NULL) {
-      close(wake_conn->sockfd);
-      free(wake_conn);
+        close(wake_conn->sockfd);
+        free(wake_conn);
     }
 
     shutdown(local_connection->sockfd, SHUT_RDWR);
@@ -346,8 +441,21 @@ void network_stop() {
     local_connection->state = CONN_CLOSED;
   }
 
+  // Send dummy packet to UDP to wake up recvfrom
+  int dummy_sock = socket(AF_INET, SOCK_DGRAM, 0);
+  if (dummy_sock >= 0) {
+      struct sockaddr_in dummy_addr;
+      memset(&dummy_addr, 0, sizeof(dummy_addr));
+      dummy_addr.sin_family = AF_INET;
+      dummy_addr.sin_port = htons(agent_port + 1);
+      dummy_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+      sendto(dummy_sock, "stop", 4, 0, (struct sockaddr *)&dummy_addr, sizeof(dummy_addr));
+      close(dummy_sock);
+  }
+
   pthread_join(listener_thread, NULL);
   pthread_join(sender_thread, NULL);
+  pthread_join(udp_listener_thread, NULL);
   cleanup_agent();
 }
 
@@ -355,7 +463,7 @@ void network_stop() {
  * Ajoute un message dans la queue outgoing.
  * Le thread socket_sender se chargera ensuite de l'envoyer a Ip:port.
  */
-void send_msg(char *Ip, int port, message_t *message) {
+void send_msg(char *Ip, int port, char *queue_name, message_t *message) {
   /*
       this function is to send the message to the outgoing message queue
       //it should get the map_entry of the outgoing message using the
@@ -370,7 +478,8 @@ void send_msg(char *Ip, int port, message_t *message) {
     return;
   }
 
-  map_entry *outgoing_mq = get_or_create_mq("outgoing");
+  const char *q_name = (queue_name != NULL && queue_name[0] != '\0') ? queue_name : "outgoing";
+  map_entry *outgoing_mq = get_or_create_mq((char*)q_name);
   if (outgoing_mq == NULL) {
     fprintf(stderr, "network_agent: outgoing mq is unavailable\n");
     return;
@@ -383,6 +492,7 @@ void send_msg(char *Ip, int port, message_t *message) {
   item.port = port;
  
   strcpy(item.type,message->type);
+  strcpy(item.recv_type,message->recv_type);
   item.size = message->size;
 
   if (message->size > 0)
@@ -393,4 +503,11 @@ void send_msg(char *Ip, int port, message_t *message) {
 
   if (msgsnd(outgoing_mq->queue_id, &item, payload_size, 0) < 0)
     perror("msgsnd outgoing");
+}
+
+/*
+ * Wrapper to send a broadcast message
+ */
+void send_broadcast(int port, message_t *message) {
+    send_broadcast_message(port, message);
 }
