@@ -40,7 +40,7 @@ create_assignments(
 );
 
 
-NodeInfo * get_node_details();
+MachineMetrics * get_mock_machine_metrics();
 
 
 #endif

@@ -4,6 +4,8 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <ifaddrs.h>
+#include <net/if.h>
 
 /*
  * Cree une connexion TCP sortante vers l'adresse IP et le port donnes.
@@ -154,21 +156,41 @@ int send_broadcast_message(int port, message_t *message)
         return -1;
     }
 
-    struct sockaddr_in broadcastAddr;
-    memset(&broadcastAddr, 0, sizeof(broadcastAddr));
-    broadcastAddr.sin_family = AF_INET;
-    broadcastAddr.sin_port = htons(port);
-    broadcastAddr.sin_addr.s_addr = inet_addr("255.255.255.255");
-
-    size_t total_size = sizeof(message_t) + message->size;
-    ssize_t sent = sendto(sockfd, message, total_size, 0, (struct sockaddr *)&broadcastAddr, sizeof(broadcastAddr));
-
-    if (sent != (ssize_t)total_size) {
-        perror("sendto broadcast");
+    struct ifaddrs *ifap, *ifa;
+    if (getifaddrs(&ifap) == -1) {
+        perror("getifaddrs");
         close(sockfd);
         return -1;
     }
 
+    size_t total_size = sizeof(message_t) + message->size;
+    int success = 0;
+
+    for (ifa = ifap; ifa != NULL; ifa = ifa->ifa_next) {
+        if (ifa->ifa_addr == NULL) continue;
+        if (ifa->ifa_addr->sa_family != AF_INET) continue;
+        if (!(ifa->ifa_flags & IFF_BROADCAST)) continue;
+        if (!(ifa->ifa_flags & IFF_UP)) continue;
+
+        struct sockaddr_in broadcastAddr;
+        memcpy(&broadcastAddr, ifa->ifa_broadaddr, sizeof(struct sockaddr_in));
+        broadcastAddr.sin_port = htons(port);
+
+        ssize_t sent = sendto(sockfd, message, total_size, 0, (struct sockaddr *)&broadcastAddr, sizeof(broadcastAddr));
+        if (sent == (ssize_t)total_size) {
+            success = 1;
+        } else {
+            perror("sendto broadcast specific interface");
+        }
+    }
+
+    freeifaddrs(ifap);
     close(sockfd);
+
+    if (!success) {
+        fprintf(stderr, "Failed to broadcast on any active interface\n");
+        return -1;
+    }
+
     return 0;
 }

@@ -12,7 +12,7 @@ typedef struct {
 typedef struct {
   char prog_name[64];
 
-  char prog_code[NETWORK_AGENT_MAX_DATA];
+  char prog_code[7500];
 } prog_t;
 
 typedef struct {
@@ -21,5 +21,7 @@ typedef struct {
     int port;
 
 } execution_context;
+
+void *worker_exec_thread(void *arg);
 
 #endif

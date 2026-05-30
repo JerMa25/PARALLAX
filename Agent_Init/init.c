@@ -3,6 +3,7 @@
 #include "monitoring/Monitoring.h"
 #include "network_agent.h"
 #include "state_receiver.h"
+#include "../Execution_Worker/worker_exec.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -352,6 +353,14 @@ static void start_threads(void){
 
     // ===== ROLE-SPECIFIC THREADS =====
     switch (agent.role) {
+    case ROLE_WORKER:
+        if (!agent.threads.worker_exec_active) {
+            pthread_create(&agent.threads.worker_exec, NULL, worker_exec_thread, NULL);
+            agent.threads.worker_exec_active = 1;
+            printf("[THREAD] Worker Execution thread started\n");
+        }
+        break;
+        
     case ROLE_CONTROLLER:
         if (!agent.threads.state_receiver_active) {
             pthread_create(&agent.threads.state_receiver, NULL, state_receiver_thread_run, NULL);
@@ -368,6 +377,14 @@ static void start_threads(void){
 
 static void stop_threads(void) {
     switch (agent.role) {  
+        case ROLE_WORKER:
+            if (agent.threads.worker_exec_active) {
+                pthread_cancel(agent.threads.worker_exec);
+                pthread_join(agent.threads.worker_exec, NULL);
+                agent.threads.worker_exec_active = 0;
+                printf("[THREAD] Worker Execution thread stopped\n");
+            }
+            break;
         case ROLE_CONTROLLER:
             if (agent.threads.state_receiver_active) {
                 state_receiver_stop();
@@ -436,7 +453,7 @@ void initialize_agent(void){
 
     // 3. Start Network thread first
     if (!agent.threads.network_active) {
-        static network_agent_config agent_net_cfg = {9000, "outgoing"};
+        static network_agent_config agent_net_cfg = {9001, "outgoing"};
         pthread_create(&agent.threads.network, NULL, network_thread_run, &agent_net_cfg);
         agent.threads.network_active = 1;
         printf("[THREAD] Network thread started\n");
@@ -445,9 +462,9 @@ void initialize_agent(void){
     // 4. Send HELLO after network thread is started (queue exists)
     // Give network thread time to initialize
     sleep(1);
-    if (agent.role != ROLE_CONTROLLER) {
-        send_hello();
-    }
+    // if (agent.role != ROLE_CONTROLLER) {
+    //     send_hello();
+    // }
 
     // 3. Start threads based on role
     start_threads();

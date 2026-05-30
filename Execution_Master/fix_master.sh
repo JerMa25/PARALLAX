@@ -1,0 +1,2 @@
+#!/bin/bash
+sed -i '36,52c\    char compile_cmd[512];\n    snprintf(compile_cmd, sizeof(compile_cmd), "gcc %s -o %s/bin_%s -pthread", filepath, PROG_DIR, prog->program_name);\n    \n    printf("[Master] Compiling program: %s\\n", compile_cmd);\n    int ret = system(compile_cmd);\n    if (ret == 0) {\n        printf("[Master] Program compiled successfully.\\n");\n    } else {\n        printf("[Master] Program compilation failed.\\n");\n    }\n    \n    free(prog);\n    return NULL;\n}' utils/master_thread.c

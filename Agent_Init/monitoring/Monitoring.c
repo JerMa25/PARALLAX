@@ -122,6 +122,9 @@ void *monitoring_thread_run(void *arg){
         // Fill IP and port dynamically
         load_network_interface(m.network_iface, sizeof(m.network_iface));
         get_local_ip(m.ip, sizeof(m.ip), m.network_iface);
+        if (strcmp(m.ip, "0.0.0.0") == 0) {
+            strcpy(m.ip, "127.0.0.1"); // Fallback if interface is down or not found
+        }
         m.port = 9000; 
         // Default worker listening port
         
@@ -188,6 +191,7 @@ MachineMetrics monitoring_get_latest(void){
     MachineMetrics m;
     pthread_mutex_lock(&metrics_mutex);
     m = latest_metrics; // Copy the latest metrics
+
     pthread_mutex_unlock(&metrics_mutex);
     return m;
 }

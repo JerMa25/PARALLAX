@@ -1,0 +1,2847 @@
+[INIT] UUID loaded from file: 7b351027-2515-4c95-9e44-8927e78c24f1
+[INIT] Initial role: 1
+[THREAD] Network thread started
+listening for connections on port 9001
+
+
+ starting reciever thread 
+
+received something 1
+received something 2
+waiting for connection...
+UDP listening on port 9002
+[THREAD] Monitoring thread started
+[THREAD] Worker Execution thread started
+[CONFIG] Detected config change, reloading...
+offsetof(message_t, data) = 168
+offsetof(queued_message, data) = 168
+Created PROG mq
+[WorkerExec] Agent PROG queue ready. Waiting for messages...
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT_INIT                                    ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:22:33 (1780100553)
+    • Type:      3
+  ▼ CPU
+    • Usage:           35.98%
+    • Load Average:    1.73, 1.85, 2.02
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.57%
+    • Available:       5784.87 MB
+    • Used:            10096 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           0.00%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     100
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 0.70/s
+    • Uptime:              113687 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT_INIT sent (msg #1)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:22:38 (1780100558)
+    • Type:      2
+  ▼ CPU
+    • Usage:           23.36%
+    • Load Average:    1.68, 1.84, 2.01
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.57%
+    • Available:       5785.93 MB
+    • Used:            10095 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           36.88%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     101
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 11028.00/s
+    • Uptime:              113692 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #2)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:22:43 (1780100563)
+    • Type:      2
+  ▼ CPU
+    • Usage:           22.86%
+    • Load Average:    1.62, 1.83, 2.01
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.66%
+    • Available:       5770.37 MB
+    • Used:            10110 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           100.30%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     107
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    5
+    • Context Switch Rate: 12141.20/s
+    • Uptime:              113697 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #3)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:22:48 (1780100568)
+    • Type:      2
+  ▼ CPU
+    • Usage:           27.89%
+    • Load Average:    2.05, 1.91, 2.03
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.25%
+    • Available:       5835.93 MB
+    • Used:            10045 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           160.24%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     109
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 12495.60/s
+    • Uptime:              113702 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #4)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:22:53 (1780100573)
+    • Type:      2
+  ▼ CPU
+    • Usage:           21.22%
+    • Load Average:    2.05, 1.91, 2.03
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.13%
+    • Available:       5854.77 MB
+    • Used:            10026 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           41.20%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     114
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 10653.00/s
+    • Uptime:              113707 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #5)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:22:58 (1780100578)
+    • Type:      2
+  ▼ CPU
+    • Usage:           27.14%
+    • Load Average:    1.96, 1.90, 2.03
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.14%
+    • Available:       5852.21 MB
+    • Used:            10028 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           2.62%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     112
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    4
+    • Context Switch Rate: 12309.00/s
+    • Uptime:              113712 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #6)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:03 (1780100583)
+    • Type:      2
+  ▼ CPU
+    • Usage:           20.78%
+    • Load Average:    1.97, 1.90, 2.03
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.18%
+    • Available:       5846.97 MB
+    • Used:            10034 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           7.24%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     113
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 11115.00/s
+    • Uptime:              113717 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #7)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:08 (1780100588)
+    • Type:      2
+  ▼ CPU
+    • Usage:           26.28%
+    • Load Average:    2.13, 1.93, 2.04
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.24%
+    • Available:       5837.27 MB
+    • Used:            10043 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           4.84%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     114
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    4
+    • Context Switch Rate: 11798.60/s
+    • Uptime:              113722 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #8)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:13 (1780100593)
+    • Type:      2
+  ▼ CPU
+    • Usage:           26.80%
+    • Load Average:    2.28, 1.97, 2.05
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.47%
+    • Available:       5801.40 MB
+    • Used:            10079 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           95.94%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     121
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    4
+    • Context Switch Rate: 11873.60/s
+    • Uptime:              113727 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #9)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:18 (1780100598)
+    • Type:      2
+  ▼ CPU
+    • Usage:           24.20%
+    • Load Average:    2.50, 2.02, 2.06
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.94%
+    • Available:       5726.94 MB
+    • Used:            10154 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           138.22%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     115
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 10809.20/s
+    • Uptime:              113732 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #10)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:23 (1780100603)
+    • Type:      2
+  ▼ CPU
+    • Usage:           18.22%
+    • Load Average:    2.38, 2.00, 2.06
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.10%
+    • Available:       5701.09 MB
+    • Used:            10179 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           1.20%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     115
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 12743.00/s
+    • Uptime:              113737 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #11)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:28 (1780100608)
+    • Type:      2
+  ▼ CPU
+    • Usage:           25.73%
+    • Load Average:    2.27, 1.99, 2.05
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.91%
+    • Available:       5730.84 MB
+    • Used:            10150 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           15.90%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     115
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    4
+    • Context Switch Rate: 12682.40/s
+    • Uptime:              113742 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #12)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:33 (1780100613)
+    • Type:      2
+  ▼ CPU
+    • Usage:           21.78%
+    • Load Average:    2.17, 1.97, 2.05
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.87%
+    • Available:       5737.13 MB
+    • Used:            10143 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           171.78%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     118
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 10821.80/s
+    • Uptime:              113747 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #13)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:38 (1780100618)
+    • Type:      2
+  ▼ CPU
+    • Usage:           18.80%
+    • Load Average:    2.23, 1.99, 2.05
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.94%
+    • Available:       5726.12 MB
+    • Used:            10154 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           7.16%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     121
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    6
+    • Context Switch Rate: 10765.60/s
+    • Uptime:              113752 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #14)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:43 (1780100623)
+    • Type:      2
+  ▼ CPU
+    • Usage:           27.32%
+    • Load Average:    2.29, 2.00, 2.06
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.07%
+    • Available:       5705.98 MB
+    • Used:            10175 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           2.94%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     126
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 14427.00/s
+    • Uptime:              113757 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #15)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:48 (1780100628)
+    • Type:      2
+  ▼ CPU
+    • Usage:           33.02%
+    • Load Average:    2.75, 2.10, 2.09
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.96%
+    • Available:       5723.00 MB
+    • Used:            10158 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           8.58%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     132
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    5
+    • Context Switch Rate: 17663.60/s
+    • Uptime:              113762 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #16)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:53 (1780100633)
+    • Type:      2
+  ▼ CPU
+    • Usage:           22.18%
+    • Load Average:    2.61, 2.09, 2.08
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.91%
+    • Available:       5731.49 MB
+    • Used:            10149 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           11.06%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     132
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 12312.60/s
+    • Uptime:              113767 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #17)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:23:58 (1780100638)
+    • Type:      2
+  ▼ CPU
+    • Usage:           20.16%
+    • Load Average:    2.48, 2.07, 2.08
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.48%
+    • Available:       5799.65 MB
+    • Used:            10081 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           16.20%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     130
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    8
+    • Context Switch Rate: 10064.80/s
+    • Uptime:              113772 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #18)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:03 (1780100643)
+    • Type:      2
+  ▼ CPU
+    • Usage:           16.51%
+    • Load Average:    2.52, 2.08, 2.08
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.54%
+    • Available:       5790.28 MB
+    • Used:            10090 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           0.84%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     128
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 10736.60/s
+    • Uptime:              113777 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #19)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:08 (1780100648)
+    • Type:      2
+  ▼ CPU
+    • Usage:           17.99%
+    • Load Average:    2.40, 2.06, 2.08
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.01%
+    • Available:       5714.34 MB
+    • Used:            10166 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           3.20%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     128
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 14385.40/s
+    • Uptime:              113782 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #20)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:13 (1780100653)
+    • Type:      2
+  ▼ CPU
+    • Usage:           8.96%
+    • Load Average:    2.45, 2.08, 2.08
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.01%
+    • Available:       5714.45 MB
+    • Used:            10166 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           69.54%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     126
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 7548.40/s
+    • Uptime:              113787 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #21)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:18 (1780100658)
+    • Type:      2
+  ▼ CPU
+    • Usage:           18.93%
+    • Load Average:    2.41, 2.08, 2.08
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.18%
+    • Available:       5688.30 MB
+    • Used:            10192 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           15.28%
+    • Used:            527045 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     126
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 9750.40/s
+    • Uptime:              113792 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #22)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:23 (1780100663)
+    • Type:      2
+  ▼ CPU
+    • Usage:           14.56%
+    • Load Average:    2.38, 2.08, 2.08
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.23%
+    • Available:       5680.53 MB
+    • Used:            10200 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           20.70%
+    • Used:            527053 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     122
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 10358.40/s
+    • Uptime:              113797 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #23)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:28 (1780100668)
+    • Type:      2
+  ▼ CPU
+    • Usage:           12.42%
+    • Load Average:    2.19, 2.04, 2.07
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.27%
+    • Available:       5673.14 MB
+    • Used:            10207 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           19.92%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     122
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 9096.00/s
+    • Uptime:              113802 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #24)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:33 (1780100673)
+    • Type:      2
+  ▼ CPU
+    • Usage:           10.96%
+    • Load Average:    2.17, 2.04, 2.07
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.28%
+    • Available:       5671.92 MB
+    • Used:            10209 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           4.00%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     122
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 8242.60/s
+    • Uptime:              113807 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #25)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:38 (1780100678)
+    • Type:      2
+  ▼ CPU
+    • Usage:           14.79%
+    • Load Average:    2.08, 2.02, 2.06
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.15%
+    • Available:       5693.03 MB
+    • Used:            10187 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           18.20%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     120
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 7849.40/s
+    • Uptime:              113812 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #26)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:43 (1780100683)
+    • Type:      2
+  ▼ CPU
+    • Usage:           10.65%
+    • Load Average:    1.99, 2.01, 2.06
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.16%
+    • Available:       5690.97 MB
+    • Used:            10190 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           6.76%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     115
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 7780.80/s
+    • Uptime:              113817 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #27)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:48 (1780100688)
+    • Type:      2
+  ▼ CPU
+    • Usage:           9.93%
+    • Load Average:    1.91, 1.99, 2.05
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.10%
+    • Available:       5701.77 MB
+    • Used:            10179 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           6.18%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     108
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 7813.60/s
+    • Uptime:              113822 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #28)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:53 (1780100693)
+    • Type:      2
+  ▼ CPU
+    • Usage:           13.47%
+    • Load Average:    1.84, 1.97, 2.05
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.08%
+    • Available:       5703.63 MB
+    • Used:            10177 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           6.40%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     104
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 8684.80/s
+    • Uptime:              113827 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #29)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:24:58 (1780100698)
+    • Type:      2
+  ▼ CPU
+    • Usage:           10.10%
+    • Load Average:    1.77, 1.96, 2.04
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.09%
+    • Available:       5702.22 MB
+    • Used:            10178 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           9.00%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     102
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 7836.00/s
+    • Uptime:              113832 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #30)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:03 (1780100703)
+    • Type:      2
+  ▼ CPU
+    • Usage:           23.94%
+    • Load Average:    1.79, 1.96, 2.04
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.13%
+    • Available:       5695.27 MB
+    • Used:            10185 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           7.40%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     102
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 11059.20/s
+    • Uptime:              113837 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #31)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:08 (1780100708)
+    • Type:      2
+  ▼ CPU
+    • Usage:           15.96%
+    • Load Average:    1.97, 1.99, 2.05
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.83%
+    • Available:       5743.57 MB
+    • Used:            10137 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           5.42%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     103
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 10973.60/s
+    • Uptime:              113842 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #32)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:13 (1780100713)
+    • Type:      2
+  ▼ CPU
+    • Usage:           17.29%
+    • Load Average:    2.13, 2.03, 2.06
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.84%
+    • Available:       5741.32 MB
+    • Used:            10139 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           40.66%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     103
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 9311.20/s
+    • Uptime:              113847 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #33)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:18 (1780100718)
+    • Type:      2
+  ▼ CPU
+    • Usage:           12.27%
+    • Load Average:    2.68, 2.14, 2.10
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.06%
+    • Available:       5706.21 MB
+    • Used:            10174 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           1.54%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     102
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 8684.80/s
+    • Uptime:              113852 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #34)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:23 (1780100723)
+    • Type:      2
+  ▼ CPU
+    • Usage:           14.05%
+    • Load Average:    2.47, 2.11, 2.09
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.08%
+    • Available:       5703.67 MB
+    • Used:            10177 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           6.84%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     103
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 9928.20/s
+    • Uptime:              113857 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #35)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:28 (1780100728)
+    • Type:      2
+  ▼ CPU
+    • Usage:           11.39%
+    • Load Average:    2.51, 2.12, 2.09
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           64.09%
+    • Available:       5702.44 MB
+    • Used:            10178 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           79.74%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     104
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 8404.20/s
+    • Uptime:              113862 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #36)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:33 (1780100733)
+    • Type:      2
+  ▼ CPU
+    • Usage:           18.59%
+    • Load Average:    2.47, 2.12, 2.09
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.49%
+    • Available:       5797.34 MB
+    • Used:            10083 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           2.02%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     104
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 9698.80/s
+    • Uptime:              113867 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #37)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:38 (1780100738)
+    • Type:      2
+  ▼ CPU
+    • Usage:           19.39%
+    • Load Average:    2.35, 2.10, 2.08
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.54%
+    • Available:       5789.01 MB
+    • Used:            10091 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           8.68%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     102
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    9
+    • Context Switch Rate: 11030.80/s
+    • Uptime:              113872 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #38)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:43 (1780100743)
+    • Type:      2
+  ▼ CPU
+    • Usage:           10.88%
+    • Load Average:    2.16, 2.06, 2.07
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.50%
+    • Available:       5796.34 MB
+    • Used:            10084 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           8.28%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     103
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 7229.80/s
+    • Uptime:              113877 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #39)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:48 (1780100748)
+    • Type:      2
+  ▼ CPU
+    • Usage:           8.88%
+    • Load Average:    2.15, 2.06, 2.07
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.40%
+    • Available:       5811.05 MB
+    • Used:            10069 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           6.42%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     102
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 7997.20/s
+    • Uptime:              113882 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #40)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:53 (1780100753)
+    • Type:      2
+  ▼ CPU
+    • Usage:           12.54%
+    • Load Average:    2.06, 2.05, 2.07
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.41%
+    • Available:       5810.16 MB
+    • Used:            10070 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           6.62%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     103
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 8961.60/s
+    • Uptime:              113887 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #41)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:25:58 (1780100758)
+    • Type:      2
+  ▼ CPU
+    • Usage:           10.98%
+    • Load Average:    1.97, 2.03, 2.06
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.94%
+    • Available:       5884.92 MB
+    • Used:            9996 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           4.72%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     101
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 8053.20/s
+    • Uptime:              113892 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #42)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:03 (1780100763)
+    • Type:      2
+  ▼ CPU
+    • Usage:           23.40%
+    • Load Average:    2.62, 2.16, 2.10
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.56%
+    • Available:       5945.91 MB
+    • Used:            9935 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           8.92%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     99
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 11311.60/s
+    • Uptime:              113897 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #43)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:08 (1780100768)
+    • Type:      2
+  ▼ CPU
+    • Usage:           21.15%
+    • Load Average:    2.41, 2.12, 2.09
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.59%
+    • Available:       5940.54 MB
+    • Used:            9940 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           4.28%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     99
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 10706.60/s
+    • Uptime:              113902 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #44)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:13 (1780100773)
+    • Type:      2
+  ▼ CPU
+    • Usage:           17.24%
+    • Load Average:    2.37, 2.12, 2.09
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.60%
+    • Available:       5939.76 MB
+    • Used:            9941 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           13.66%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     97
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 10231.20/s
+    • Uptime:              113907 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #45)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:18 (1780100778)
+    • Type:      2
+  ▼ CPU
+    • Usage:           20.84%
+    • Load Average:    2.34, 2.12, 2.09
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.76%
+    • Available:       5913.86 MB
+    • Used:            9967 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           3.72%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     96
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 10263.20/s
+    • Uptime:              113912 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #46)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:23 (1780100783)
+    • Type:      2
+  ▼ CPU
+    • Usage:           13.44%
+    • Load Average:    2.40, 2.13, 2.10
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.75%
+    • Available:       5916.00 MB
+    • Used:            9965 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           9.04%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     95
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 9407.00/s
+    • Uptime:              113917 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #47)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:28 (1780100788)
+    • Type:      2
+  ▼ CPU
+    • Usage:           20.30%
+    • Load Average:    2.92, 2.25, 2.13
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.73%
+    • Available:       5918.64 MB
+    • Used:            9962 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           0.60%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     94
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 8658.40/s
+    • Uptime:              113922 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #48)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:33 (1780100793)
+    • Type:      2
+  ▼ CPU
+    • Usage:           9.81%
+    • Load Average:    2.77, 2.23, 2.13
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.75%
+    • Available:       5915.66 MB
+    • Used:            9965 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           8.38%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     94
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 7705.80/s
+    • Uptime:              113927 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #49)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:38 (1780100798)
+    • Type:      2
+  ▼ CPU
+    • Usage:           20.81%
+    • Load Average:    2.79, 2.24, 2.13
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.76%
+    • Available:       5913.70 MB
+    • Used:            9967 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           4.42%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     95
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 10694.00/s
+    • Uptime:              113932 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #50)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:43 (1780100803)
+    • Type:      2
+  ▼ CPU
+    • Usage:           18.67%
+    • Load Average:    2.65, 2.22, 2.13
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.80%
+    • Available:       5906.63 MB
+    • Used:            9974 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           3.28%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     96
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 9450.20/s
+    • Uptime:              113937 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #51)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:48 (1780100808)
+    • Type:      2
+  ▼ CPU
+    • Usage:           10.06%
+    • Load Average:    2.67, 2.23, 2.13
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.68%
+    • Available:       5926.75 MB
+    • Used:            9954 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           5.16%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     95
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 8010.60/s
+    • Uptime:              113942 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #52)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:53 (1780100813)
+    • Type:      2
+  ▼ CPU
+    • Usage:           17.43%
+    • Load Average:    3.10, 2.33, 2.16
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.69%
+    • Available:       5924.62 MB
+    • Used:            9956 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           6.80%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     97
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 9102.00/s
+    • Uptime:              113947 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #53)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:26:58 (1780100818)
+    • Type:      2
+  ▼ CPU
+    • Usage:           8.98%
+    • Load Average:    3.09, 2.34, 2.17
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.49%
+    • Available:       5956.07 MB
+    • Used:            9924 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           9.34%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     95
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 7673.60/s
+    • Uptime:              113952 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #54)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:03 (1780100823)
+    • Type:      2
+  ▼ CPU
+    • Usage:           18.01%
+    • Load Average:    2.92, 2.32, 2.16
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.49%
+    • Available:       5956.34 MB
+    • Used:            9924 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           52.40%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     95
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 9891.80/s
+    • Uptime:              113957 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #55)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:08 (1780100828)
+    • Type:      2
+  ▼ CPU
+    • Usage:           23.11%
+    • Load Average:    3.81, 2.51, 2.22
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.53%
+    • Available:       5949.83 MB
+    • Used:            9931 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           7.26%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     95
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 11060.80/s
+    • Uptime:              113962 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #56)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:13 (1780100833)
+    • Type:      2
+  ▼ CPU
+    • Usage:           17.89%
+    • Load Average:    3.59, 2.49, 2.22
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.50%
+    • Available:       5954.60 MB
+    • Used:            9926 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           4.82%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     95
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 9160.20/s
+    • Uptime:              113967 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #57)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:18 (1780100838)
+    • Type:      2
+  ▼ CPU
+    • Usage:           13.14%
+    • Load Average:    3.38, 2.46, 2.21
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.94%
+    • Available:       5885.04 MB
+    • Used:            9995 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           4.78%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     93
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 8612.00/s
+    • Uptime:              113972 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #58)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:23 (1780100843)
+    • Type:      2
+  ▼ CPU
+    • Usage:           13.46%
+    • Load Average:    3.19, 2.44, 2.20
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.98%
+    • Available:       5878.31 MB
+    • Used:            10002 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           0.54%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     94
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 9405.60/s
+    • Uptime:              113977 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #59)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:28 (1780100848)
+    • Type:      2
+  ▼ CPU
+    • Usage:           16.98%
+    • Load Average:    3.01, 2.41, 2.20
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.99%
+    • Available:       5876.38 MB
+    • Used:            10004 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           3.20%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     93
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    3
+    • Context Switch Rate: 9033.60/s
+    • Uptime:              113982 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #60)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:33 (1780100853)
+    • Type:      2
+  ▼ CPU
+    • Usage:           13.64%
+    • Load Average:    2.77, 2.37, 2.18
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.01%
+    • Available:       5873.66 MB
+    • Used:            10007 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           5.76%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     93
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 7852.60/s
+    • Uptime:              113987 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔══connect: Connection timed out
+══════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #61)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:38 (1780100858)
+    • Type:      2
+  ▼ CPU
+    • Usage:           10.84%
+    • Load Average:    2.63, 2.35, 2.18
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.01%
+    • Available:       5874.80 MB
+    • Used:            10006 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           5.44%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     93
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 8147.40/s
+    • Uptime:              113992 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #62)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:43 (1780100863)
+    • Type:      2
+  ▼ CPU
+    • Usage:           8.88%
+    • Load Average:    2.42, 2.31, 2.17
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.00%
+    • Available:       5875.10 MB
+    • Used:            10005 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           1.08%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     94
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 7331.40/s
+    • Uptime:              113997 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #63)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:48 (1780100868)
+    • Type:      2
+  ▼ CPU
+    • Usage:           11.46%
+    • Load Average:    2.38, 2.31, 2.17
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.87%
+    • Available:       5895.45 MB
+    • Used:            9985 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           9.30%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     93
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 8908.00/s
+    • Uptime:              114002 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #64)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:53 (1780100873)
+    • Type:      2
+  ▼ CPU
+    • Usage:           19.71%
+    • Load Average:    2.19, 2.27, 2.15
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.94%
+    • Available:       5885.20 MB
+    • Used:            9995 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           6.92%
+    • Used:            527054 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     95
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 9921.80/s
+    • Uptime:              114007 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #65)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:27:58 (1780100878)
+    • Type:      2
+  ▼ CPU
+    • Usage:           20.66%
+    • Load Average:    2.02, 2.23, 2.14
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           62.98%
+    • Available:       5878.89 MB
+    • Used:            10002 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           3.34%
+    • Used:            527055 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     93
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    1
+    • Context Switch Rate: 10102.80/s
+    • Uptime:              114012 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #66)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:28:03 (1780100883)
+    • Type:      2
+  ▼ CPU
+    • Usage:           18.33%
+    • Load Average:    2.02, 2.22, 2.14
+    • Cores:           4
+    • Threads/Core:    8
+    • Frequency:       800.00 MHz
+    • Model:           Intel(R) Core(TM) i7-2820QM CPU @ 2.30GHz
+  ▼ MÉMOIRE (RAM)
+    • Usage:           63.01%
+    • Available:       5874.53 MB
+    • Used:            10006 MB
+    • Total:           15881 MB
+  ▼ DISQUE
+    • Usage:           23.68%
+    • Used:            527055 MB
+    • Total:           599296 MB
+    • Mount Point:     /
+  ▼ RÉSEAU
+    • Bandwidth:       0.00 Mbps
+    • Connections:     93
+    • Interface:       wlx001f0534a0a4
+  ▼ SYSTÈME
+    • Active Processes:    2
+    • Context Switch Rate: 9488.00/s
+    • Uptime:              114017 seconds
+    • Is Overloaded:       NO
+  ▼ CALCULS
+    • Queue Length: 0
+    • Score:        0.00
+╔════════════════════════════════════════════════════════════════════╗
+
+[MONITORING] MSG_HEARTBEAT sent (msg #67)
+[CONFIG] Interface loaded: wlx001f0534a0a4
+
+╔════════════════════════════════════════════════════════════════════╗
+║ [SENDING] Message Type: MSG_HEARTBEAT                                         ║
+╚════════════════════════════════════════════════════════════════════╝
+  ▼ IDENTITÉ
+    • UUID:      7b351027-2515-4c95-9e44-8927e78c24f1
+    • IP:        192.168.201.156:9000
+    • Timestamp: 2026-05-30 01:28:08 (1780100888)
+    • Type:      2
+  ▼ CPU
+    • Usage:           13.11%
+    • Load Average:

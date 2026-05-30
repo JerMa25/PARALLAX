@@ -1,0 +1,126 @@
+[MockWorker 9000] Starting network agent on port 9000...
+listening for connections on port 9000
+
+
+ starting reciever thread 
+
+received something 1
+received something 2
+waiting for connection...
+UDP listening on port 9001
+[MockWorker 9000] Listening on PROG and NODES queues...
+Client connected from 127.0.0.1:60490 (fd=11)
+received message with type HB_INIT
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60492 (fd=11)
+received message with type NODES
+received something 2
+waiting for connection...
+[MockWorker 9000] Received NODES request. Sending dummy nodes...
+Client connected from 127.0.0.1:60494 (fd=11)
+received message with type PROG
+received something 2
+waiting for connection...
+[MockWorker 9000] Received CHCK request. Replying NONE.
+Client connected from 127.0.0.1:60496 (fd=11)
+received message with type PROG
+received something 2
+waiting for connection...
+[MockWorker 9000] Received PROG upload! Compiling...
+[MockWorker 9000] Waiting for TASK on TASK_Q_9000...
+Client connected from 127.0.0.1:60500 (fd=11)
+received message with type TASK_Q_9000
+received something 2
+waiting for connection...
+[MockWorker 9000] Received TASK! Executing...
+[MockWorker 9000] Task complete!
+Client connected from 127.0.0.1:60502 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60504 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60506 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60508 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60510 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60514 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60516 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60518 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60520 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60522 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60524 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60526 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60528 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60530 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60532 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60534 (fd=11)
+received message with type NODES
+received something 2
+waiting for connection...
+[MockWorker 9000] Received NODES request. Sending dummy nodes...
+Client connected from 127.0.0.1:60536 (fd=11)
+received message with type PROG
+received something 2
+waiting for connection...
+[MockWorker 9000] Received CHCK request. Replying NONE.
+Client connected from 127.0.0.1:60538 (fd=11)
+received message with type PROG
+received something 2
+waiting for connection...
+[MockWorker 9000] Received PROG upload! Compiling...
+[MockWorker 9000] Waiting for TASK on TASK_Q_9000...
+Client connected from 127.0.0.1:60540 (fd=11)
+received message with type TASK_Q_9000
+received something 2
+waiting for connection...
+[MockWorker 9000] Received TASK! Executing...
+[MockWorker 9000] Task complete!
+Client connected from 127.0.0.1:60542 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 127.0.0.1:60544 (fd=11)
+received message with type HB
+received something 

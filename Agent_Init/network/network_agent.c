@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #define NETWORK_AGENT_MTYPE 1L
-#define NETWORK_AGENT_MAX_DATA 65536
 
 static pthread_t listener_thread;
 static pthread_t sender_thread;
@@ -249,6 +248,8 @@ void *socket_listener(void *args) {
   
     strcpy(item.type,header.type);
     strcpy(item.recv_type,header.recv_type);
+    strcpy(item.sender_ip, header.sender_ip);
+    item.sender_port = header.sender_port;
     item.size = header.size;
 
     if (item.size > 0) {
@@ -331,7 +332,9 @@ void *socket_sender(void *args) {
 
    
     strcpy(message->type,item.type);
-    strcpy(message->recv_type,item.recv_type);
+    strcpy(message->recv_type, item.recv_type);
+    strcpy(message->sender_ip, item.sender_ip);
+    message->sender_port = item.sender_port;
     message->size = item.size;
     if (item.size > 0)
       memcpy(message->data, item.data, item.size);
@@ -485,23 +488,33 @@ void send_msg(char *Ip, int port, char *queue_name, message_t *message) {
     return;
   }
 
-  outgoing_message item;
-  memset(&item, 0, sizeof(item));
-  item.mtype = NETWORK_AGENT_MTYPE;
-  strncpy(item.ip, Ip, sizeof(item.ip) - 1);
-  item.port = port;
- 
-  strcpy(item.type,message->type);
-  strcpy(item.recv_type,message->recv_type);
-  item.size = message->size;
+  outgoing_message out;
+  memset(&out, 0, sizeof(out));
+  out.mtype = NETWORK_AGENT_MTYPE;
+  strncpy(out.ip, Ip, sizeof(out.ip) - 1);
+  out.ip[sizeof(out.ip) - 1] = '\0';
+  out.port = port;
+  
+  strcpy(out.type, message->type);
+  strncpy(out.recv_type, message->recv_type, sizeof(out.recv_type) - 1);
+  out.recv_type[sizeof(out.recv_type) - 1] = '\0';
+  
+  if (strlen(message->sender_ip) == 0) {
+      strncpy(out.sender_ip, "127.0.0.1", sizeof(out.sender_ip) - 1);
+  } else {
+      strncpy(out.sender_ip, message->sender_ip, sizeof(out.sender_ip) - 1);
+  }
+  out.sender_ip[sizeof(out.sender_ip) - 1] = '\0';
+  
+  out.sender_port = (message->sender_port == 0) ? agent_port : message->sender_port;
+  out.size = message->size;
 
   if (message->size > 0)
-    memcpy(item.data, message->data, message->size);
+    memcpy(out.data, message->data, message->size);
 
-  size_t payload_size =
-      offsetof(outgoing_message, data) - sizeof(long) + item.size;
+  size_t payload_size = offsetof(outgoing_message, data) - sizeof(long) + out.size;
 
-  if (msgsnd(outgoing_mq->queue_id, &item, payload_size, 0) < 0)
+  if (msgsnd(outgoing_mq->queue_id, &out, payload_size, 0) < 0)
     perror("msgsnd outgoing");
 }
 

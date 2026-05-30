@@ -6,6 +6,8 @@ typedef struct {
     long mq_type;
     char type[64];
     char recv_type[64];
+    char sender_ip[16];
+    int sender_port;
     uint64_t size;
     char data[];
 } message_t;

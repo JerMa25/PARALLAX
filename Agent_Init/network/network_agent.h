@@ -4,11 +4,13 @@
 #include "socket.h"
 
 #define NETWORK_AGENT_MTYPE 1L
-#define NETWORK_AGENT_MAX_DATA 65536
+#define NETWORK_AGENT_MAX_DATA 8000
 typedef struct {
     long mtype;
     char type[64];
     char recv_type[64];
+    char sender_ip[16];
+    int sender_port;
     uint64_t size;
     char data[NETWORK_AGENT_MAX_DATA];
 } queued_message;
@@ -19,6 +21,8 @@ typedef struct {
     int port;
     char type[64];
     char recv_type[64];
+    char sender_ip[16];
+    int sender_port;
     uint64_t size;
     char data[NETWORK_AGENT_MAX_DATA];
 } outgoing_message;

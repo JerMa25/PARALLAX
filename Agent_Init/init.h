@@ -24,7 +24,6 @@ typedef struct {
     // For Worker only
 
     // For Controller only
-    pthread_t state_receiver;
 
     // For Master only
 
@@ -32,12 +31,16 @@ typedef struct {
 
     // In common
     pthread_t monitoring;
-    pthread_t network;
-
-    // Activity flags
-    int state_receiver_active;
     int monitoring_active;
+
+    pthread_t state_receiver;
+    int state_receiver_active;
+    
+    pthread_t network;
     int network_active;
+    
+    pthread_t worker_exec;
+    int worker_exec_active;
 } AgentThreads;
 
 // ===== AGENT STATE =====

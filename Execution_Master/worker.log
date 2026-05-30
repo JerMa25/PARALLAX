@@ -1,0 +1,128 @@
+[MockWorker] Starting network agent on port 9000...
+listening for connections on port 9000
+
+
+ starting reciever thread 
+
+received something 1
+received something 2
+waiting for connection...
+UDP listening on port 9001
+[MockWorker] Listening on PROG and NODES queues...
+Client connected from 127.0.0.1:60234 (fd=11)
+received message with type NODES
+received something 2
+waiting for connection...
+[MockWorker] Received NODES request. Sending dummy node...
+Client connected from 127.0.0.1:60236 (fd=11)
+received message with type PROG
+received something 2
+waiting for connection...
+[MockWorker] Received CHCK request. Replying NONE.
+Client connected from 127.0.0.1:60238 (fd=11)
+received message with type PROG
+received something 2
+waiting for connection...
+[MockWorker] Received PROG upload! Compiling...
+[MockWorker] Waiting for TASK on TASK_Q...
+Client connected from 127.0.0.1:60240 (fd=11)
+received message with type TASK_Q
+received something 2
+waiting for connection...
+[MockWorker] Received TASK! Executing...
+[MockWorker] Task complete!
+Client connected from 192.168.201.217:35404 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35408 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35416 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35430 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35444 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35448 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35452 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35462 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35464 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35470 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35472 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35476 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35478 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35486 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35494 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35502 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35510 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35526 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35532 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35540 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35554 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35566 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35578 (fd=11)
+received message with type HB
+received something 2
+waiting for connection...
+Client connected from 192.168.201.217:35580 (fd=11)
+received message with type HB
+receive

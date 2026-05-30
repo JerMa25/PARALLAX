@@ -1,0 +1,17 @@
+[TestReal] Starting REAL worker_exec agent on port 9002...
+offsetof(message_t, data) = 168
+offsetof(queued_message, data) = 168
+Created PROG mq
+[WorkerExec] Agent PROG queue ready. Waiting for messages...
+listening for connections on port 9002
+
+
+ starting reciever thread 
+
+received something 1
+received something 2
+waiting for connection...
+UDP listening on port 9003
+[TestReal] Starting mock CONTROLLER on port 9000...
+[TestReal] Ready. Waiting for NODES queries on port 9000...
+

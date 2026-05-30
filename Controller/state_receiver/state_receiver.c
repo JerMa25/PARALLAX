@@ -116,54 +116,54 @@ void * get_machine_xtics(void * arg){
     
     (void)arg;
     char * get_nodes_type = create_mq("NODES", sizeof(queued_message));
-    map_entry * node_query_mq = find_by_msg_type(get_nodes_type);
+    map_entry * node_query_mq = find_by_msg_type("NODES");
     if (!node_query_mq) return NULL;
 
     queued_message qmsg;
+    printf("Alive and kickin\n");
     while(1){
         ssize_t ret = msgrcv(node_query_mq->queue_id, &qmsg, sizeof(qmsg) - sizeof(long),
                              1L, IPC_NOWAIT); // NETWORK_AGENT_MTYPE is 1L
+        //printf("recieved nothing in %d \n",node_query_mq->queue_id);
        
         if (ret == -1) {
             usleep(100000);
             continue;
         }
 
-       message_t * message = (message_t *)qmsg.data;
+        char reply_ip[16] = "127.0.0.1";
+        int reply_port = 9002;
+        if (qmsg.size > 0) {
+            sscanf(qmsg.data, "%15[^:]:%d", reply_ip, &reply_port);
+        }
        
-       MachineMetrics * metrics = get_all_node_metrics();
-       int count = 0;
-       if (metrics) {
-           while (strlen(metrics[count].uuid) > 0) {
-               count++;
-           }
-       }
+        MachineMetrics * metrics = get_all_node_metrics();
+        int count = 0;
+        if (metrics) {
+            while (strlen(metrics[count].uuid) > 0) {
+                count++;
+            }
+        }
        
-       size_t payload_size = count * sizeof(MachineMetrics);
-       size_t total_size = sizeof(message_t) + payload_size;
+        size_t payload_size = count * sizeof(MachineMetrics);
+        size_t total_size = sizeof(message_t) + payload_size;
        
-       message_t * resp = malloc(total_size);
-       if (!resp) {
-           free(metrics);
-           continue;
-       }
-       memset(resp, 0, total_size);
-       strncpy(resp->recv_type, message->recv_type, sizeof(resp->recv_type) - 1);
-       resp->size = payload_size;
-       if (payload_size > 0) {
-           memcpy(resp->data, metrics, payload_size);
-       }
-       free(metrics);
+        message_t * resp = malloc(total_size);
+        if (!resp) {
+            free(metrics);
+            continue;
+        }
+        memset(resp, 0, total_size);
+        strncpy(resp->type, qmsg.recv_type, sizeof(resp->type) - 1);
+        strncpy(resp->recv_type, qmsg.recv_type, sizeof(resp->recv_type) - 1);
+        resp->size = payload_size;
+        if (payload_size > 0) {
+            memcpy(resp->data, metrics, payload_size);
+        }
+        free(metrics);
 
-       map_entry * reply_mq = find_by_msg_type(message->recv_type);
-       if (reply_mq) {
-           queued_message reply_qmsg;
-           memset(&reply_qmsg, 0, sizeof(reply_qmsg));
-           reply_qmsg.mtype = 1L;
-           memcpy(reply_qmsg.data, resp, total_size);
-           msgsnd(reply_mq->queue_id, &reply_qmsg, sizeof(reply_qmsg) - sizeof(long), 0);
-       }
-       free(resp);
+        send_msg(reply_ip, reply_port, "outgoing", resp);
+        free(resp);
     }
     return NULL;
 }
@@ -321,7 +321,8 @@ static void update_heartbeat(MachineMetrics* msg) {
     pthread_mutex_lock(&g_node_table.lock);
 
     printf("\n\n\nFrom update Heartbeat");
-    print_machine_metrics(msg);
+     print_machine_metrics(msg);
+   //printf("[StateReceiver] Received a Heartbeat\n");
     NodeInfo* node = node_table_find(&g_node_table, msg->uuid);
     if (!node) {
         printf("[StateReceiver] ⚠ Nœud inconnu %s, auto-enregistrement...\n", msg->uuid);
@@ -332,6 +333,11 @@ static void update_heartbeat(MachineMetrics* msg) {
         }
     }
     
+    // Update node identity (IP/Port might have changed or recovered from stale snapshot)
+    strncpy(node->ip, msg->ip, sizeof(node->ip) - 1);
+    node->ip[sizeof(node->ip) - 1] = '\0';
+    node->port = msg->port;
+
     // Mise à jour de l'état du noeud
     node->last_heartbeat       = time(NULL);
     node->role                 = msg->role;  // Update role from metrics
@@ -386,6 +392,11 @@ static void init_heartbeat(MachineMetrics* msg) {
     } else {
         node->role = msg->role;  // Update role from heartbeat_init
     }
+
+    // Update node identity
+    strncpy(node->ip, msg->ip, sizeof(node->ip) - 1);
+    node->ip[sizeof(node->ip) - 1] = '\0';
+    node->port = msg->port;
 
     // Mise à jour des informations matérielles si pas encore initialisées
     if (!node->hardware.initialized) {
@@ -505,7 +516,6 @@ void * hello_func(void * arg){
         
         load_network_interface(iface, sizeof(iface));
         get_local_ip(my_ip, sizeof(my_ip), iface);
-        
         message_t *reply = malloc(sizeof(message_t) + 64);
         strcpy(reply->type, HELLO_TYPE);
         strcpy(reply->recv_type, "");
