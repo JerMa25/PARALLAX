@@ -5,8 +5,7 @@
 typedef struct {
   char function_name[64];
   uint64_t data_count;
-  uint64_t data[];
-
+  uint8_t data[];
 } recv_task_t;
 
 typedef struct {

@@ -41,6 +41,9 @@ typedef struct {
     
     pthread_t worker_exec;
     int worker_exec_active;
+
+    pthread_t master_thread;
+    int master_thread_active;
 } AgentThreads;
 
 // ===== AGENT STATE =====

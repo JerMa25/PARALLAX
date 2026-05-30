@@ -129,11 +129,14 @@ void * get_machine_xtics(void * arg){
             continue;
         }
 
-        char reply_ip[16] = "127.0.0.1";
-        int reply_port = 9002;
-        if (qmsg.size > 0) {
-            sscanf(qmsg.data, "%15[^:]:%d", reply_ip, &reply_port);
-        }
+        // Use sender_ip and sender_port from the message header
+        // These are set automatically by the network agent on the sender's side
+        char reply_ip[16];
+        strncpy(reply_ip, qmsg.sender_ip, sizeof(reply_ip) - 1);
+        reply_ip[sizeof(reply_ip) - 1] = '\0';
+        int reply_port = qmsg.sender_port;
+        
+        printf("[Controller] NODES query received from %s:%d\n", reply_ip, reply_port);
        
         MachineMetrics * metrics = get_all_node_metrics();
         int count = 0;

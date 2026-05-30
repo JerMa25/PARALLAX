@@ -9,6 +9,8 @@ SRCS = main.c \
 	   Agent_Init/network/*.c \
 	   Controller/state_receiver/*.c \
 	   Execution_Worker/worker_exec.c \
+	   $(filter-out Execution_Master/utils/linked_list.c,\
+             $(wildcard Execution_Master/utils/*.c))
 
 # Détection OS
 UNAME := $(shell uname)
@@ -33,7 +35,9 @@ INCLUDES = -I./Agent_Init \
 			-I./Agent_Init/monitoring \
 		   	-I./Controller/state_receiver \
 			-I./Execution_Worker \
-			-I./parallax
+			-I./parallax \
+			-I./Execution_Master/utils
+
 
 all: $(TARGET)
 
