@@ -80,6 +80,7 @@ public:
             return;
 
       
+        // llvm::outs() << "Found var: " << var->getNameAsString() << "\n";
         for (const Attr *A : var->attrs()) {
             if (const auto *AA = dyn_cast<AnnotateAttr>(A)) {
                 llvm::outs() << "Annotation: "
@@ -152,67 +153,59 @@ public:
             return;
 
       
+        int vcpus = 1;
+        bool has_annotation = false;
+
         for (const Attr *A : func->attrs()) {
             if (const auto *AA = dyn_cast<AnnotateAttr>(A)) {
-                llvm::outs() << "Annotation: "
-                            << AA->getAnnotation() 
-                            <<" at function "
-                            <<func->getNameAsString();
+                std::string annotation = AA->getAnnotation().str();
+                llvm::outs() << "Annotation: " << annotation << " at function " << func->getNameAsString() << "\n";
+                if (annotation.find("vcpus:") == 0) {
+                    vcpus = std::stoi(annotation.substr(6));
+                    has_annotation = true;
+                } else if (annotation.find("goat:") == 0) {
+                    has_annotation = true;
+                }
             }
         }
 
-       
+        // Only transform if it has a relevant annotation
+        if (!has_annotation) {
+            return;
+        }
 
+        std::string sourceFunction = func->getNameAsString();
+        std::string returnType = func->getReturnType().getAsString();
+        std::string functionName = sourceFunction + "_generated";
 
-        //replace the function with another function
+        // Build parameter list and extract param names for execute_fxn
+        std::string params;
+        std::string data_param = "NULL";
+        std::string size_param = "0";
 
-        //create and insert the new function declaration 
-    std::string sourceFunction = func->getNameAsString();
-    std::string returnType =
-    func->getReturnType().getAsString();
+        for (unsigned i = 0; i < func->getNumParams(); ++i) {
+            const ParmVarDecl *P = func->getParamDecl(i);
+            std::string paramName = P->getNameAsString();
+            
+            if (i == 0) data_param = paramName;
+            if (i == 1) size_param = paramName;
 
+            params += P->getType().getAsString() + " " + paramName;
+            if (i + 1 < func->getNumParams()) params += ", ";
+        }
 
+        // Create new function text that calls execute_fxn
+        std::string newFunction =
+            "\n" + returnType + " " + functionName + "(" + params + ") {\n"
+            "    execute_fxn(" + data_param + ", " + size_param + ", \"" + sourceFunction + "\", " + std::to_string(vcpus) + ");\n"
+            "}\n";
 
-    std::string functionName =
-        func->getNameAsString() + "_generated";
+        // Insert at end of file
+        clang::SourceLocation endOfFile = rewriter.getSourceMgr().getLocForEndOfFile(rewriter.getSourceMgr().getMainFileID());
+        rewriter.InsertText(endOfFile, newFunction, true, true);
 
-
-    // Build parameter list
-    std::string params;
-
-    for (unsigned i = 0; i < func->getNumParams(); ++i) {
-        const ParmVarDecl *P = func->getParamDecl(i);
-
-        params += P->getType().getAsString();
-        params += " ";
-        params += P->getNameAsString();
-
-        if (i + 1 < func->getNumParams())
-            params += ", ";
-    }
-
-    // Create new function text
-    std::string newFunction =
-        "\n" +
-        returnType + " " +
-        functionName + "(" +
-        params +
-        ") {\n"
-        "    printf(\"generated function\\n\");\n"
-        "}\n";
-
-    // Insert at end of file
-    clang::SourceLocation endOfFile =
-        rewriter.getSourceMgr().getLocForEndOfFile(
-            rewriter.getSourceMgr().getMainFileID()
-        );
-
-    rewriter.InsertText(endOfFile, newFunction, true, true);
-
-    //update metadata
-    metadata.addTranformedFunct(sourceFunction,functionName);
-
-
+        //update metadata
+        metadata.addTranformedFunct(sourceFunction, functionName);
     }
 };
 
@@ -281,6 +274,21 @@ class MyASTConsumer : public ASTConsumer{
         MymetaData.printAllTransformedFunctions();
         CallExprMatcher.matchAST(context);
 
+        // Generate the matcher function
+        std::string matcherCode = "\n\ntypedef void *(*fn)(void *);\n\n";
+        matcherCode += "fn matcher(char *name) {\n";
+        
+        for (const auto& pair : MymetaData.transformedFuncs) {
+            matcherCode += "    if (strcmp(name, \"" + pair.first + "\") == 0) {\n";
+            matcherCode += "        return (fn)" + pair.first + ";\n";
+            matcherCode += "    }\n";
+        }
+        
+        matcherCode += "    return NULL;\n";
+        matcherCode += "}\n";
+
+        clang::SourceLocation endOfFile = MyRewriter.getSourceMgr().getLocForEndOfFile(MyRewriter.getSourceMgr().getMainFileID());
+        MyRewriter.InsertText(endOfFile, matcherCode, true, true);
     }
 
 
