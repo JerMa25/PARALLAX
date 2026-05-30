@@ -466,9 +466,9 @@ void initialize_agent(void) {
     // 4. Send HELLO after network thread is started (queue exists)
     // Give network thread time to initialize
     sleep(1);
-    // if (agent.role != ROLE_CONTROLLER) {
-    //     send_hello();
-    // }
+    if (agent.role != ROLE_CONTROLLER) {
+        send_hello();
+    }
 
   // 3. Start threads based on role
   start_threads();
