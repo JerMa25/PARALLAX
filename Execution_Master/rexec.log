@@ -1,0 +1,37 @@
+[RealWorker] Starting real worker_exec on port 9002...
+offsetof(message_t, data) = 168
+offsetof(queued_message, data) = 168
+Created PROG mq
+[WorkerExec] Agent PROG queue ready. Waiting for messages...
+listening for connections on port 9002
+
+
+ starting reciever thread 
+
+received something 1
+received something 2
+waiting for connection...
+UDP listening on port 9003
+Client connected from 127.0.0.1:41264 (fd=11)
+received message with type PROG
+received something 2
+waiting for connection...
+Received message of type PROG
+Received CHCK request for prog_name: test_output
+Client connected from 127.0.0.1:41266 (fd=11)
+received message with type PROG
+received something 2
+waiting for connection...
+Received message of type PROG
+Entered here 
+Generated this mq_id PKdhtXM
+cc1: fatal error: Execution_Worker/logic.c: No such file or directory
+compilation terminated.
+Client connected from 127.0.0.1:41268 (fd=11)
+received message with type PKdhtXM
+received something 2
+waiting for connection...
+received function my_test_function
+received data 0x7fdb1d5ffd30
+binary exec failed: No such file or directory
+Task executed. Result: 

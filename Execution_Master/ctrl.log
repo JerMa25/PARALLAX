@@ -1,0 +1,17 @@
+[MockController] Starting on port 9000...
+listening for connections on port 9000
+
+
+ starting reciever thread 
+
+received something 1
+received something 2
+waiting for connection...
+UDP listening on port 9001
+[MockController] Ready. Advertising real worker_exec on 127.0.0.1:9002
+
+Client connected from 127.0.0.1:33018 (fd=11)
+received message with type NODES
+received something 2
+waiting for connection...
+[MockController] NODES query from 127.0.0.1:9005 → replying with worker @ 9002

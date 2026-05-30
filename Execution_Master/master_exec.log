@@ -1,0 +1,38 @@
+[TestExec] Starting network agent on port 9005...
+listening for connections on port 9005
+
+
+ starting reciever thread 
+
+received something 1
+received something 2
+waiting for connection...
+UDP listening on port 9006
+
+[TestExec] Calling execute_fxn to request 1 node(s) and distribute task...
+[TestExec] ⏳ WAITING for Controller at 127.0.0.1:9000 to respond to NODES query...
+Client connected from 127.0.0.1:49370 (fd=11)
+received message with type NODES
+received something 2
+waiting for connection...
+
+=================================
+NODE 0
+=================================
+uuid          : mock-worker-1
+ip            : 127.0.0.1
+cpu usage     : 5.00
+ram usage     : 10.00
+function      : my_test_function
+nb chunk bytes: 32
+chunk ints    : 8
+data preview  : 1819043144 1919295599 1948282223 1830839656 1702130529 
+Thread with tid 0 started
+to execute function my_test_function
+with ip 127.0.0.1
+sending to node with uuid mock-worker-1
+Chunk data: 1819043144 1919295599 1948282223 1830839656 1702130529 1868767346 1869771886 1919249516 
+Thread with tid 0 resumed and died
+Checking if program exists on worker 127.0.0.1:9001
+[Master] Sent CHCK message for test_output to worker_exec.
+connect: Connection refused
